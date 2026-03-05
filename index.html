@@ -1,32 +1,142 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Spinning Wheel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TheWheelSpinner | Customizable Spinner App</title>
+  <meta name="description" content="TheWheelSpinner is a customizable one-page spinner app with editable entries, theme presets, and smooth animations.">
+  <link rel="canonical" href="https://thewheelspinner.github.io/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="TheWheelSpinner | Customizable Spinner App">
+  <meta property="og:description" content="Design your own lucky wheel, spin it, and share the result.">
+  <meta property="og:url" content="https://thewheelspinner.github.io/">
+  <meta property="og:image" content="https://thewheelspinner.github.io/assets/og/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:video" content="https://thewheelspinner.github.io/assets/og/spinner-preview.mp4">
+  <meta property="og:video:type" content="video/mp4">
+  <meta property="og:video:width" content="720">
+  <meta property="og:video:height" content="720">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="TheWheelSpinner | Customizable Spinner App">
+  <meta name="twitter:description" content="TheWheelSpinner lets you customize entries, colors, and spin behavior in seconds.">
+  <meta name="twitter:image" content="https://thewheelspinner.github.io/assets/og/og-image.png">
+
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['\"Sora\"', 'ui-sans-serif', 'system-ui']
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css">
-  <script src="//unpkg.com/alpinejs" defer></script>
-
-
+  <script src="https://unpkg.com/alpinejs" defer></script>
 </head>
-<body>
-<!-- partial:index.partial.html -->
+<body class="min-h-screen bg-slate-950 text-slate-100 antialiased">
+  <div class="page-glow"></div>
 
+  <div x-data="wheelApp()" class="relative">
+    <header class="sticky top-0 z-30 border-b border-white/10 bg-slate-950/70 backdrop-blur-xl">
+      <nav class="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
+        <a href="#top" class="text-lg font-extrabold tracking-tight text-cyan-300">TheWheelSpinner</a>
+        <div class="hidden items-center gap-6 text-sm font-semibold sm:flex">
+          <a href="#play" class="text-slate-300 transition hover:text-cyan-300">Play</a>
+          <a href="#how" class="text-slate-300 transition hover:text-cyan-300">How it works</a>
+          <a href="#customize" class="text-slate-300 transition hover:text-cyan-300">Customize</a>
+        </div>
+        <button @click="spin()" :disabled="spinning" class="rounded-full bg-cyan-400 px-4 py-2 text-sm font-bold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-50">
+          <span x-text="spinning ? 'Spinning...' : 'Quick Spin'"></span>
+        </button>
+      </nav>
+    </header>
 
-<div id="main" class="main" x-data="wheelApp()">
-    <div id="wheel" class="wheel" :style="`transform: rotate(${rotation}deg);`">
-        <template x-for="(field, index) in fields" :key="index">
-            <span :style="getSpanStyle(index)">
-                <p x-text="field"></p>
-            </span>
-        </template>
-    </div>
+    <main id="top" class="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-8 sm:px-6 sm:py-12">
+      <section id="play" class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+        <article class="prose prose-invert prose-headings:font-extrabold prose-p:text-slate-300">
+          <h1>Super cool spinner for quick decisions.</h1>
+          <p>Build your own wheel in seconds, spin with cinematic momentum, and use it for giveaways, team picks, or game night.</p>
+          <p class="!mt-6 rounded-2xl border border-cyan-400/30 bg-cyan-400/10 p-4 text-cyan-100">
+            Tip: Edit entries, theme, and spin speed in the settings panel.
+          </p>
+          <div class="!mt-8 flex flex-wrap gap-3">
+            <button @click="spin()" :disabled="spinning" class="rounded-xl bg-emerald-400 px-5 py-3 text-sm font-extrabold uppercase tracking-wide text-emerald-950 transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-50">Spin the wheel</button>
+            <button @click="shuffleEntries()" class="rounded-xl border border-slate-500 px-5 py-3 text-sm font-bold text-slate-100 transition hover:border-cyan-300 hover:text-cyan-300">Shuffle entries</button>
+          </div>
+          <p class="!mt-6 text-xl font-bold text-amber-300" x-show="winnerLabel" x-transition>
+            Winner: <span x-text="winnerLabel"></span>
+          </p>
+        </article>
 
-    <button class="spin" @click="spin()">SPIN</button>
-</div>
+        <div class="relative flex justify-center">
+          <div class="wheel-frame">
+            <div id="wheel" class="wheel" :style="wheelStyle"></div>
+            <template x-for="(entry, index) in entries" :key="entry + index">
+              <span class="wheel-label" :style="labelStyle(index)" x-text="entry"></span>
+            </template>
+            <div class="wheel-center">SPIN</div>
+            <div class="wheel-pointer"></div>
+          </div>
+        </div>
+      </section>
 
+      <section id="customize" class="grid gap-6 rounded-3xl border border-white/10 bg-slate-900/80 p-5 sm:p-7 lg:grid-cols-2">
+        <div>
+          <h2 class="text-xl font-extrabold text-cyan-300">Settings</h2>
+          <p class="mt-2 text-sm text-slate-300">Customize entries, palette, and spin physics.</p>
 
-<!-- partial -->
-  <script  src="./script.js"></script>
+          <label class="mt-5 block text-xs font-bold uppercase tracking-wider text-slate-300">Entries (one per line)</label>
+          <textarea x-model="entriesInput" @input="syncEntries()" class="mt-2 h-36 w-full rounded-xl border border-slate-700 bg-slate-950/70 p-3 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none" placeholder="Pizza&#10;Sushi&#10;Burger"></textarea>
 
+          <div class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <label class="block">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Theme</span>
+              <select x-model="activeTheme" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950/70 p-2.5 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none">
+                <template x-for="(theme, key) in themes" :key="key">
+                  <option :value="key" x-text="theme.name"></option>
+                </template>
+              </select>
+            </label>
+
+            <label class="block">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Spin seconds: <span x-text="spinDuration"></span></span>
+              <input type="range" min="3" max="10" step="1" x-model.number="spinDuration" class="mt-3 w-full accent-cyan-400">
+            </label>
+
+            <label class="block">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Min rounds</span>
+              <input type="number" min="2" max="20" x-model.number="minRounds" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950/70 p-2.5 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none">
+            </label>
+
+            <label class="block">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Max rounds</span>
+              <input type="number" min="3" max="30" x-model.number="maxRounds" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950/70 p-2.5 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none">
+            </label>
+          </div>
+        </div>
+
+        <article id="how" class="prose prose-invert max-w-none prose-headings:text-cyan-300 prose-p:text-slate-300 prose-li:text-slate-300">
+          <h3>How it works</h3>
+          <ul>
+            <li>Each line in the entry box becomes one segment on the wheel.</li>
+            <li>Spin duration and rounds control animation speed and intensity.</li>
+            <li>The pointer stays fixed while the wheel rotates to the selected winner.</li>
+          </ul>
+          <p>The page is optimized for sharing previews via OG image and video metadata.</p>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="./script.js"></script>
 </body>
 </html>

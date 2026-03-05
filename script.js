@@ -1,79 +1,130 @@
 function wheelApp() {
-    return {
-      rotation: 0,
-      spinning: false,
-      fields: ['😊', '😝', '😍', '😎', '🍩', '🍭', '🍰', '🍬'],
-      inputText: '', // bind textarea input
-      maxFields: 12, // limit max fields
-  
-      spin() {
-        console.log('spin');
-        if (this.spinning) return;
-        this.spinning = true;
-        const min = 1024;
-        const max = 9999;
-        const newRotation = Math.floor(Math.random() * (max - min)) + min;
-        this.rotation += newRotation;
-        setTimeout(() => {
-          this.spinning = false;
-        }, 4000);
+  return {
+    entries: ['Pizza', 'Sushi', 'Burger', 'Tacos', 'Pasta', 'Salad', 'Ramen', 'Steak'],
+    entriesInput: '',
+    rotation: 0,
+    spinning: false,
+    winnerLabel: '',
+    spinDuration: 6,
+    minRounds: 5,
+    maxRounds: 9,
+    activeTheme: 'neon',
+    themes: {
+      neon: {
+        name: 'Neon Night',
+        bg: 'radial-gradient(circle at 20% 20%, #1f2937 0%, #020617 65%)',
+        colors: ['#22d3ee', '#34d399', '#f472b6', '#f59e0b', '#818cf8', '#fb7185', '#2dd4bf', '#c084fc']
       },
-  
-      getSpanStyle(index) {
-        const colors = ['#ff1f1f', '#19e3cf', '#9e0bf3', '#15b600', '#1f26ff', '#ff5a5a', '#57fff1', '#ff9612'];
-        const color = colors[index % colors.length];
-      
-        // Setup clip-paths manually
-        const clipPaths = [
-          'polygon(0 92%, 100% 50%, 0 8%)',
-          'polygon(100% 92%, 0 50%, 100% 8%)',
-          'polygon(50% 0%, 8% 100%, 92% 100%)',
-          'polygon(50% 100%, 92% 0, 8% 0)',
-          'polygon(0 40%, 100% 0%, 60% 100%)',
-          'polygon(40% 100%, 0 0%, 100% 40%)',
-          'polygon(60% 0, 100% 100%, 0 60%)',
-          'polygon(0 100%, 100% 60%, 40% 0)'
-        ];
-        const clipPath = clipPaths[index % clipPaths.length];
-      
-        // Setup positions manually
-        const positions = [
-          { top: '120px', left: '0' },
-          { top: '120px', right: '0' },
-          { bottom: '0', left: '120px' },
-          { top: '0', left: '120px' },
-          { bottom: '-2px', right: '242px' },
-          { bottom: '-2px', left: '242px' },
-          { top: '-2px', right: '242px' },
-          { top: '-2px', left: '242px' }
-        ];
-        const pos = positions[index % positions.length];
-      
-        // Create a dynamic style string
-        return `
-          width: 50%;
-          height: 50%;
-          display: inline-block;
-          position: absolute;
-          clip-path: ${clipPath};
-          background-color: ${color};
-          ${pos.top ? `top: ${pos.top};` : ''}
-          ${pos.bottom ? `bottom: ${pos.bottom};` : ''}
-          ${pos.left ? `left: ${pos.left};` : ''}
-          ${pos.right ? `right: ${pos.right};` : ''}
-        `;
+      sunset: {
+        name: 'Sunset Pop',
+        bg: 'radial-gradient(circle at 20% 20%, #7c2d12 0%, #1e1b4b 65%)',
+        colors: ['#fdba74', '#fb7185', '#facc15', '#fb923c', '#f43f5e', '#a78bfa', '#f97316', '#eab308']
       },
-  
-      updateFields() {
-        let lines = this.inputText.split('\\n')
-          .map(line => line.trim())
-          .filter(line => line.length > 0);
-  
-        if (lines.length > this.maxFields) {
-          lines = lines.slice(0, this.maxFields); // limit to max
-          alert(`Max ${this.maxFields} items allowed! Extra lines were ignored.`);
-        }
-        this.fields = lines.length ? lines : ['😊', '😝', '😍', '😎', '🍩', '🍭', '🍰', '🍬']; // fallback if empty
+      ocean: {
+        name: 'Ocean Pulse',
+        bg: 'radial-gradient(circle at 20% 20%, #082f49 0%, #020617 65%)',
+        colors: ['#38bdf8', '#14b8a6', '#0ea5e9', '#22c55e', '#06b6d4', '#2dd4bf', '#0f766e', '#60a5fa']
       }
+    },
+
+    init() {
+      this.entriesInput = this.entries.join('\n');
+      this.applyThemeBackground();
+      this.$watch('activeTheme', () => this.applyThemeBackground());
+    },
+
+    get wheelStyle() {
+      const colors = this.themeColors();
+      const angle = 360 / this.entries.length;
+      const stops = this.entries
+        .map((_, index) => {
+          const start = (index * angle).toFixed(3);
+          const end = ((index + 1) * angle).toFixed(3);
+          const color = colors[index % colors.length];
+          return `${color} ${start}deg ${end}deg`;
+        })
+        .join(', ');
+
+      return `background: conic-gradient(from -90deg, ${stops}); transform: rotate(${this.rotation}deg); transition: transform ${this.spinDuration}s cubic-bezier(.17,.67,.26,1);`;
+    },
+
+    themeColors() {
+      return this.themes[this.activeTheme]?.colors ?? this.themes.neon.colors;
+    },
+
+    applyThemeBackground() {
+      const bg = this.themes[this.activeTheme]?.bg;
+      if (bg) {
+        document.body.style.background = bg;
+      }
+    },
+
+    labelStyle(index) {
+      const count = this.entries.length;
+      const angle = 360 / count;
+      const centerAngle = -90 + index * angle + angle / 2;
+      const textRotate = centerAngle + 90;
+
+      return `
+        transform: rotate(${centerAngle}deg) translateY(-39%) rotate(${textRotate}deg);
+      `;
+    },
+
+    syncEntries() {
+      const next = this.entriesInput
+        .split('\n')
+        .map((item) => item.trim())
+        .filter(Boolean)
+        .slice(0, 20);
+
+      if (next.length >= 2) {
+        this.entries = next;
+      }
+    },
+
+    sanitizeRounds() {
+      this.minRounds = Math.max(2, Math.min(20, Number(this.minRounds) || 5));
+      this.maxRounds = Math.max(3, Math.min(30, Number(this.maxRounds) || 9));
+      if (this.maxRounds <= this.minRounds) {
+        this.maxRounds = this.minRounds + 1;
+      }
+    },
+
+    spin() {
+      if (this.spinning || this.entries.length < 2) {
+        return;
+      }
+
+      this.sanitizeRounds();
+      this.spinning = true;
+      this.winnerLabel = '';
+
+      const count = this.entries.length;
+      const segmentAngle = 360 / count;
+      const winnerIndex = Math.floor(Math.random() * count);
+      const winnerCenter = winnerIndex * segmentAngle + segmentAngle / 2;
+
+      const rounds = Math.floor(Math.random() * (this.maxRounds - this.minRounds + 1)) + this.minRounds;
+      const target = rounds * 360 + (360 - winnerCenter);
+      this.rotation += target;
+
+      window.setTimeout(() => {
+        this.winnerLabel = this.entries[winnerIndex];
+        this.spinning = false;
+      }, this.spinDuration * 1000 + 80);
+    },
+
+    shuffleEntries() {
+      if (this.spinning) {
+        return;
+      }
+
+      for (let i = this.entries.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [this.entries[i], this.entries[j]] = [this.entries[j], this.entries[i]];
+      }
+
+      this.entriesInput = this.entries.join('\n');
     }
-  }
+  };
+}
