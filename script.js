@@ -28,9 +28,38 @@ function wheelApp() {
     },
 
     init() {
+      try {
+        const saved = JSON.parse(localStorage.getItem('wheelApp') || 'null');
+        if (saved) {
+          if (Array.isArray(saved.entries) && saved.entries.length >= 2) this.entries = saved.entries;
+          if (saved.activeTheme && this.themes[saved.activeTheme]) this.activeTheme = saved.activeTheme;
+          if (saved.spinDuration) this.spinDuration = saved.spinDuration;
+          if (saved.minRounds) this.minRounds = saved.minRounds;
+          if (saved.maxRounds) this.maxRounds = saved.maxRounds;
+        }
+      } catch (_) {}
+
       this.entriesInput = this.entries.join('\n');
       this.applyThemeBackground();
-      this.$watch('activeTheme', () => this.applyThemeBackground());
+      this.$watch('activeTheme', () => {
+        this.applyThemeBackground();
+        this.persist();
+      });
+      this.$watch('spinDuration', () => this.persist());
+      this.$watch('minRounds', () => this.persist());
+      this.$watch('maxRounds', () => this.persist());
+    },
+
+    persist() {
+      try {
+        localStorage.setItem('wheelApp', JSON.stringify({
+          entries: this.entries,
+          activeTheme: this.activeTheme,
+          spinDuration: this.spinDuration,
+          minRounds: this.minRounds,
+          maxRounds: this.maxRounds
+        }));
+      } catch (_) {}
     },
 
     get wheelStyle() {
@@ -38,8 +67,8 @@ function wheelApp() {
       const angle = 360 / this.entries.length;
       const stops = this.entries
         .map((_, index) => {
-          const start = (index * angle).toFixed(3);
-          const end = ((index + 1) * angle).toFixed(3);
+          const start = Math.round(index * angle);
+          const end = Math.round((index + 1) * angle);
           const color = colors[index % colors.length];
           return `${color} ${start}deg ${end}deg`;
         })
@@ -78,6 +107,7 @@ function wheelApp() {
 
       if (next.length >= 2) {
         this.entries = next;
+        this.persist();
       }
     },
 
@@ -127,6 +157,7 @@ function wheelApp() {
       }
 
       this.entriesInput = this.entries.join('\n');
+      this.persist();
     }
   };
 }

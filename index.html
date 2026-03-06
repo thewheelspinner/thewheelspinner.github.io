@@ -40,7 +40,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css">
-  <script src="https://unpkg.com/alpinejs" defer></script>
+  <script src="https://unpkg.com/alpinejs@3/dist/cdn.min.js" defer></script>
 </head>
 <body class="min-h-screen bg-slate-950 text-slate-100 antialiased">
   <div class="page-glow"></div>
@@ -54,7 +54,7 @@
           <a href="#how" class="text-slate-300 transition hover:text-cyan-300">How it works</a>
           <a href="#customize" class="text-slate-300 transition hover:text-cyan-300">Customize</a>
         </div>
-        <button @click="spin()" :disabled="spinning" class="rounded-full bg-cyan-400 px-4 py-2 text-sm font-bold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-50">
+        <button @click="spin()" :disabled="spinning" :aria-label="spinning ? 'Spinning' : 'Quick spin'" class="rounded-full bg-cyan-400 px-4 py-2 text-sm font-bold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-50">
           <span x-text="spinning ? 'Spinning...' : 'Quick Spin'"></span>
         </button>
       </nav>
@@ -69,8 +69,8 @@
             Tip: Edit entries, theme, and spin speed in the settings panel.
           </p>
           <div class="!mt-8 flex flex-wrap gap-3">
-            <button @click="spin()" :disabled="spinning" class="rounded-xl bg-emerald-400 px-5 py-3 text-sm font-extrabold uppercase tracking-wide text-emerald-950 transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-50">Spin the wheel</button>
-            <button @click="shuffleEntries()" class="rounded-xl border border-slate-500 px-5 py-3 text-sm font-bold text-slate-100 transition hover:border-cyan-300 hover:text-cyan-300">Shuffle entries</button>
+            <button @click="spin()" :disabled="spinning" :aria-label="spinning ? 'Spinning' : 'Spin the wheel'" class="rounded-xl bg-emerald-400 px-5 py-3 text-sm font-extrabold uppercase tracking-wide text-emerald-950 transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-50">Spin the wheel</button>
+            <button @click="shuffleEntries()" :disabled="spinning" aria-label="Shuffle entries" class="rounded-xl border border-slate-500 px-5 py-3 text-sm font-bold text-slate-100 transition hover:border-cyan-300 hover:text-cyan-300 disabled:cursor-not-allowed disabled:opacity-50">Shuffle entries</button>
           </div>
           <p class="!mt-6 text-xl font-bold text-amber-300" x-show="winnerLabel" x-transition>
             Winner: <span x-text="winnerLabel"></span>
@@ -84,7 +84,7 @@
                 <span class="wheel-label" :style="labelStyle(index)" x-text="entry"></span>
               </template>
             </div>
-            <button type="button" class="wheel-center" @click="spin()" :disabled="spinning">
+            <button type="button" class="wheel-center" @click="spin()" :disabled="spinning" :aria-label="spinning ? 'Spinning' : 'Spin the wheel'">
               <span x-text="spinning ? '...' : 'SPIN'"></span>
             </button>
             <div class="wheel-pointer"></div>
@@ -98,7 +98,7 @@
           <p class="mt-2 text-sm text-slate-300">Customize entries, palette, and spin physics.</p>
 
           <label class="mt-5 block text-xs font-bold uppercase tracking-wider text-slate-300">Entries (one per line)</label>
-          <textarea x-model="entriesInput" @input="syncEntries()" class="mt-2 h-36 w-full rounded-xl border border-slate-700 bg-slate-950/70 p-3 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none" placeholder="Pizza&#10;Sushi&#10;Burger"></textarea>
+          <textarea x-model="entriesInput" @input.debounce.250ms="syncEntries()" aria-label="Wheel entries, one per line" class="mt-2 h-36 w-full rounded-xl border border-slate-700 bg-slate-950/70 p-3 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none" placeholder="Pizza&#10;Sushi&#10;Burger"></textarea>
 
           <div class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <label class="block">
