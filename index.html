@@ -65,9 +65,11 @@
         <article class="prose prose-invert prose-headings:font-extrabold prose-p:text-slate-300">
           <h1>Super cool spinner for quick decisions.</h1>
           <p>Build your own wheel in seconds, spin with cinematic momentum, and use it for giveaways, team picks, or game night.</p>
-          <p class="!mt-6 rounded-2xl border border-cyan-400/30 bg-cyan-400/10 p-4 text-cyan-100">
-            Tip: Edit entries, theme, and spin speed in the settings panel.
-          </p>
+          <div class="!mt-6 flex">
+            <div class="relative rounded-full px-3 py-1 text-sm/6 text-slate-400 ring-1 ring-white/10 hover:ring-white/20">
+              Tip: Edit entries, theme, and spin speed in the <a href="#customize" class="whitespace-nowrap font-semibold text-cyan-400"><span aria-hidden="true" class="absolute inset-0"></span>settings panel <span aria-hidden="true">&rarr;</span></a>
+            </div>
+          </div>
           <div class="!mt-8 flex flex-wrap gap-3">
             <button @click="spin()" :disabled="spinning" class="rounded-xl bg-emerald-400 px-5 py-3 text-sm font-extrabold uppercase tracking-wide text-emerald-950 transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-50">Spin the wheel</button>
             <button @click="shuffleEntries()" class="rounded-xl border border-slate-500 px-5 py-3 text-sm font-bold text-slate-100 transition hover:border-cyan-300 hover:text-cyan-300">Shuffle entries</button>
