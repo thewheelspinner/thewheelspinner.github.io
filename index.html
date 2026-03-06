@@ -79,11 +79,14 @@
 
         <div class="relative flex justify-center">
           <div class="wheel-frame">
-            <div id="wheel" class="wheel" :style="wheelStyle"></div>
-            <template x-for="(entry, index) in entries" :key="entry + index">
-              <span class="wheel-label" :style="labelStyle(index)" x-text="entry"></span>
-            </template>
-            <div class="wheel-center">SPIN</div>
+            <div id="wheel" class="wheel" :style="wheelStyle">
+              <template x-for="(entry, index) in entries" :key="entry + index">
+                <span class="wheel-label" :style="labelStyle(index)" x-text="entry"></span>
+              </template>
+            </div>
+            <button type="button" class="wheel-center" @click="spin()" :disabled="spinning">
+              <span x-text="spinning ? '...' : 'SPIN'"></span>
+            </button>
             <div class="wheel-pointer"></div>
           </div>
         </div>

@@ -54,6 +54,7 @@ body {
 
 .wheel-center {
   position: absolute;
+  z-index: 3;
   top: 50%;
   left: 50%;
   width: 96px;
@@ -69,6 +70,22 @@ body {
   font-weight: 800;
   letter-spacing: 0.08em;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: transform 0.18s ease, background-color 0.18s ease;
+  padding: 0;
+}
+
+.wheel-center:hover:not(:disabled) {
+  background: #172554;
+}
+
+.wheel-center:active:not(:disabled) {
+  transform: translate(-50%, -50%) scale(0.97);
+}
+
+.wheel-center:disabled {
+  cursor: not-allowed;
+  opacity: 0.72;
 }
 
 .wheel-pointer {

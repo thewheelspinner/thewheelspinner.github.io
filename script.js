@@ -63,10 +63,9 @@ function wheelApp() {
       const count = this.entries.length;
       const angle = 360 / count;
       const centerAngle = -90 + index * angle + angle / 2;
-      const textRotate = centerAngle + 90;
 
       return `
-        transform: rotate(${centerAngle}deg) translateY(-39%) rotate(${textRotate}deg);
+        transform: rotate(${centerAngle}deg) translateY(-50%);
       `;
     },
 
@@ -103,9 +102,12 @@ function wheelApp() {
       const segmentAngle = 360 / count;
       const winnerIndex = Math.floor(Math.random() * count);
       const winnerCenter = winnerIndex * segmentAngle + segmentAngle / 2;
+      const desiredAngle = (360 - winnerCenter) % 360;
+      const currentAngle = ((this.rotation % 360) + 360) % 360;
+      const correction = (desiredAngle - currentAngle + 360) % 360;
 
       const rounds = Math.floor(Math.random() * (this.maxRounds - this.minRounds + 1)) + this.minRounds;
-      const target = rounds * 360 + (360 - winnerCenter);
+      const target = rounds * 360 + correction;
       this.rotation += target;
 
       window.setTimeout(() => {
