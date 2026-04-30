@@ -24,23 +24,11 @@
   <meta name="twitter:description" content="TheWheelSpinner lets you customize entries, colors, and spin behavior in seconds.">
   <meta name="twitter:image" content="https://thewheelspinner.github.io/assets/og/og-image.png">
 
-  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['\"Sora\"', 'ui-sans-serif', 'system-ui']
-          }
-        }
-      }
-    };
-  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css">
-  <script src="https://unpkg.com/alpinejs@3/dist/cdn.min.js" defer></script>
   <script>
     !function(t,e){var o,n,p,r;e.__SV||(window.posthog && window.posthog.__loaded)||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="Ei Ni init zi Gi Nr Ui Xi Vi capture calculateEventProperties tn register register_once register_for_session unregister unregister_for_session an getFeatureFlag getFeatureFlagPayload getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey cancelPendingSurvey canRenderSurvey canRenderSurveyAsync ln identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset setIdentity clearIdentity get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException addExceptionStep captureLog startExceptionAutocapture stopExceptionAutocapture loadToolbar get_property getSessionProperty nn Qi createPersonProfile setInternalOrTestUser sn qi cn opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing Ji debug Fr rn getPageViewId captureTraceFeedback captureTraceMetric Bi".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
     posthog.init('phc_D6JeJmFJuSMfHa8rEazKGnr5U2s9YrXtsMgjNQWtMott', {
@@ -49,143 +37,225 @@
         person_profiles: 'identified_only',
     })
   </script>
+  <script src="https://unpkg.com/alpinejs@3/dist/cdn.min.js" defer></script>
 </head>
-<body class="min-h-screen bg-slate-950 text-slate-100 antialiased">
-  <div class="page-glow"></div>
+<body class="bg-slate-100 antialiased text-slate-900" style="font-family: 'Sora', ui-sans-serif, system-ui">
 
-  <div x-data="wheelApp()" class="relative">
-    <header class="sticky top-0 z-30 border-b border-white/10 bg-slate-950/70 backdrop-blur-xl">
-      <nav class="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
-        <a href="#top" class="text-lg font-extrabold tracking-tight text-cyan-300">TheWheelSpinner</a>
-        <div class="hidden items-center gap-6 text-sm font-semibold sm:flex">
-          <a href="#play" @click="track('nav_clicked', { link: 'play' })" class="text-slate-300 transition hover:text-cyan-300">Play</a>
-          <a href="#how" @click="track('nav_clicked', { link: 'how_it_works' })" class="text-slate-300 transition hover:text-cyan-300">How it works</a>
-          <a href="#customize" @click="track('nav_clicked', { link: 'customize' })" class="text-slate-300 transition hover:text-cyan-300">Customize</a>
+<div x-data="wheelApp()">
+
+  <!-- ── Header ─────────────────────────────────────────────── -->
+  <header class="fixed top-0 inset-x-0 z-30 h-14 bg-white border-b border-slate-200 flex items-center px-4 sm:px-6 gap-4">
+    <div class="flex items-center gap-2.5 flex-1 min-w-0">
+      <!-- Wheel logo -->
+      <svg viewBox="0 0 32 32" class="w-7 h-7 flex-shrink-0" aria-hidden="true">
+        <circle cx="16" cy="16" r="15" fill="#f1f5f9"/>
+        <path d="M16 16 L16 1 A15 15 0 0 1 31 16 Z" fill="#a78bfa"/>
+        <path d="M16 16 L31 16 A15 15 0 0 1 16 31 Z" fill="#f472b6"/>
+        <path d="M16 16 L16 31 A15 15 0 0 1 1 16 Z" fill="#fb923c"/>
+        <path d="M16 16 L1 16 A15 15 0 0 1 16 1 Z" fill="#60a5fa"/>
+        <circle cx="16" cy="16" r="5.5" fill="white"/>
+      </svg>
+      <span class="font-extrabold text-slate-800 text-base tracking-tight truncate">Wheel Spinner</span>
+    </div>
+
+    <div class="flex items-center gap-0.5 flex-shrink-0">
+      <button @click="newWheel()" :disabled="spinning" class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-slate-600 font-medium hover:bg-slate-100 transition disabled:opacity-40" aria-label="New wheel">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        <span class="hidden sm:inline">New</span>
+      </button>
+      <button @click="saveEntries()" class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-slate-600 font-medium hover:bg-slate-100 transition" aria-label="Save entries as text file">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        <span class="hidden sm:inline">Save</span>
+      </button>
+      <button @click="shareWheel()" class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium hover:bg-slate-100 transition" :class="copied ? 'text-emerald-600' : 'text-slate-600'" aria-label="Copy link to clipboard">
+        <svg x-show="!copied" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        <svg x-show="copied" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        <span class="hidden sm:inline" x-text="copied ? 'Copied!' : 'Share'"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ── App body ────────────────────────────────────────────── -->
+  <div class="pt-14 flex flex-col lg:flex-row min-h-[calc(100vh-3.5rem)]">
+
+    <!-- Left: Wheel area -->
+    <main class="flex-1 flex flex-col items-center justify-center py-10 px-4 gap-4">
+
+      <div class="wheel-pointer" aria-hidden="true"></div>
+
+      <div class="wheel-frame">
+        <div id="wheel" class="wheel" :style="wheelStyle">
+          <template x-for="(entry, index) in entries" :key="index">
+            <span class="wheel-label" :style="labelStyle(index)" x-text="entry"></span>
+          </template>
         </div>
-        <button @click="spin()" :disabled="spinning" :aria-label="spinning ? 'Spinning' : 'Quick spin'" class="rounded-full bg-cyan-400 px-4 py-2 text-sm font-bold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-50">
-          <span x-text="spinning ? 'Spinning...' : 'Quick Spin'"></span>
+        <button type="button" class="wheel-center" @click="spin()" :disabled="spinning" :aria-label="spinning ? 'Spinning' : 'Spin the wheel'">
+          <span x-text="spinning ? '...' : 'Spin'"></span>
         </button>
-      </nav>
-    </header>
+      </div>
 
-    <main id="top" class="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-8 sm:px-6 sm:py-12">
-      <section id="play" class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-        <article class="prose prose-invert prose-headings:font-extrabold prose-p:text-slate-300">
-          <h1>Super cool spinner for quick decisions.</h1>
-          <p>Build your own wheel in seconds, spin with cinematic momentum, and use it for giveaways, team picks, or game night.</p>
-          <div class="!mt-6 flex">
-            <div class="relative rounded-full px-3 py-1 text-sm/6 text-slate-400 ring-1 ring-white/10 hover:ring-white/20">
-              Tip: Edit entries, theme, and spin speed in the <a href="#customize" class="whitespace-nowrap font-semibold text-cyan-400"><span aria-hidden="true" class="absolute inset-0"></span>settings panel <span aria-hidden="true">&rarr;</span></a>
-            </div>
-          </div>
-          <div class="!mt-8 flex flex-wrap gap-3">
-            <button @click="spin()" :disabled="spinning" :aria-label="spinning ? 'Spinning' : 'Spin the wheel'" class="rounded-xl bg-emerald-400 px-5 py-3 text-sm font-extrabold uppercase tracking-wide text-emerald-950 transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-50">Spin the wheel</button>
-            <button @click="shuffleEntries()" :disabled="spinning" aria-label="Shuffle entries" class="rounded-xl border border-slate-500 px-5 py-3 text-sm font-bold text-slate-100 transition hover:border-cyan-300 hover:text-cyan-300 disabled:cursor-not-allowed disabled:opacity-50">Shuffle entries</button>
-          </div>
-          <p class="!mt-6 text-xl font-bold text-amber-300" x-show="winnerLabel" x-transition>
-            Winner: <span x-text="winnerLabel"></span>
-          </p>
-        </article>
+      <div class="h-8 flex items-center justify-center">
+        <p class="text-lg font-extrabold text-slate-800" x-show="winnerLabel" x-transition>
+          🎉 <span x-text="winnerLabel"></span>
+        </p>
+      </div>
 
-        <div class="relative flex justify-center">
-          <div class="wheel-frame">
-            <div id="wheel" class="wheel" :style="wheelStyle">
-              <template x-for="(entry, index) in entries" :key="entry + index">
-                <span class="wheel-label" :style="labelStyle(index)" x-text="entry"></span>
-              </template>
-            </div>
-            <button type="button" class="wheel-center" @click="spin()" :disabled="spinning" :aria-label="spinning ? 'Spinning' : 'Spin the wheel'">
-              <span x-text="spinning ? '...' : 'SPIN'"></span>
-            </button>
-            <div class="wheel-pointer"></div>
-          </div>
-        </div>
-      </section>
-
-      <section id="customize" class="grid gap-6 rounded-3xl border border-white/10 bg-slate-900/80 p-5 sm:p-7 lg:grid-cols-2">
-        <div>
-          <h2 class="text-xl font-extrabold text-cyan-300">Settings</h2>
-          <p class="mt-2 text-sm text-slate-300">Customize entries, palette, and spin physics.</p>
-
-          <label class="mt-5 block text-xs font-bold uppercase tracking-wider text-slate-300">Entries (one per line)</label>
-          <textarea x-model="entriesInput" @input.debounce.250ms="syncEntries()" aria-label="Wheel entries, one per line" class="mt-2 h-36 w-full rounded-xl border border-slate-700 bg-slate-950/70 p-3 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none" placeholder="Pizza&#10;Sushi&#10;Burger"></textarea>
-
-          <div class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <label class="block">
-              <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Theme</span>
-              <select x-model="activeTheme" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950/70 p-2.5 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none">
-                <template x-for="(theme, key) in themes" :key="key">
-                  <option :value="key" x-text="theme.name"></option>
-                </template>
-              </select>
-            </label>
-
-            <label class="block">
-              <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Spin seconds: <span x-text="spinDuration"></span></span>
-              <input type="range" min="3" max="10" step="1" x-model.number="spinDuration" class="mt-3 w-full accent-cyan-400">
-            </label>
-
-            <label class="block">
-              <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Min rounds</span>
-              <input type="number" min="2" max="20" x-model.number="minRounds" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950/70 p-2.5 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none">
-            </label>
-
-            <label class="block">
-              <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Max rounds</span>
-              <input type="number" min="3" max="30" x-model.number="maxRounds" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950/70 p-2.5 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none">
-            </label>
-          </div>
-        </div>
-
-        <article id="how" class="prose prose-invert max-w-none prose-headings:text-cyan-300 prose-p:text-slate-300 prose-li:text-slate-300">
-          <h3>How it works</h3>
-          <ul>
-            <li>Each line in the entry box becomes one segment on the wheel.</li>
-            <li>Spin duration and rounds control animation speed and intensity.</li>
-            <li>The pointer stays fixed while the wheel rotates to the selected winner.</li>
-          </ul>
-          <p>The page is optimized for sharing previews via OG image and video metadata.</p>
-        </article>
-      </section>
+      <button @click="resetWheel()" :disabled="spinning" aria-label="Reset wheel" class="flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-2 text-sm font-medium text-slate-600 transition hover:border-slate-400 hover:text-slate-800 disabled:opacity-40 disabled:cursor-not-allowed">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5.07"/></svg>
+        Reset Wheel
+      </button>
     </main>
 
-    <footer class="mt-16 border-t border-white/10 bg-slate-950/60">
-      <div class="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-10 sm:px-6 md:flex-row md:gap-16">
+    <!-- Right: Panel -->
+    <aside class="w-full lg:w-[340px] xl:w-96 bg-white border-t lg:border-t-0 lg:border-l border-slate-200 flex-shrink-0 lg:h-[calc(100vh-3.5rem)] lg:overflow-y-auto">
+      <div class="p-5">
 
-        <div class="flex-1">
-          <p class="text-base font-extrabold tracking-tight text-cyan-300">TheWheelSpinner</p>
-          <p class="mt-2 text-sm leading-relaxed text-slate-400">A free, customizable wheel spinner for making random decisions. Add your own entries, pick a color theme, tweak the spin physics, and let the wheel decide — great for giveaways, classroom picks, game nights, and more.</p>
+        <!-- Entries header -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <h2 class="font-bold text-slate-900">Entries</h2>
+            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-100 text-xs font-bold text-slate-600" x-text="entries.length"></span>
+          </div>
+          <div class="flex items-center gap-0.5">
+            <button @click="shuffleEntries()" :disabled="spinning" title="Shuffle" aria-label="Shuffle entries" class="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition disabled:opacity-30">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+            </button>
+            <button @click="sortEntries()" :disabled="spinning" title="Sort A–Z" aria-label="Sort entries A to Z" class="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition disabled:opacity-30">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="9" y2="18"/></svg>
+            </button>
+            <button @click="showAddInput = !showAddInput; newEntryValue = ''" :disabled="entries.length >= 20" title="Add entry" aria-label="Add entry" class="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition disabled:opacity-30">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+          </div>
         </div>
 
-        <div>
-          <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Features</p>
-          <ul class="mt-3 space-y-1.5 text-sm text-slate-400">
-            <li>Up to 20 custom entries</li>
-            <li>3 color themes</li>
-            <li>Adjustable spin speed &amp; rounds</li>
-            <li>Shuffle entries randomly</li>
-            <li>Settings saved automatically</li>
-          </ul>
-        </div>
+        <!-- Add entry input -->
+        <template x-if="showAddInput">
+          <div class="mt-3 flex gap-2">
+            <input
+              x-init="$el.focus()"
+              x-model="newEntryValue"
+              @keydown.enter="addEntry()"
+              @keydown.escape="showAddInput = false; newEntryValue = ''"
+              placeholder="Type and press Enter…"
+              maxlength="40"
+              class="flex-1 min-w-0 rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400"
+            >
+            <button @click="addEntry()" class="flex-shrink-0 rounded-lg bg-indigo-500 px-3 py-2 text-xs font-bold text-white hover:bg-indigo-600 transition">Add</button>
+          </div>
+        </template>
 
-        <div>
-          <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Use cases</p>
-          <ul class="mt-3 space-y-1.5 text-sm text-slate-400">
-            <li>Giveaways &amp; contests</li>
-            <li>Classroom random picker</li>
-            <li>Game night decisions</li>
-            <li>Team assignments</li>
-            <li>What to eat tonight</li>
-          </ul>
-        </div>
+        <!-- Entries list -->
+        <ul class="mt-3 divide-y divide-slate-100">
+          <template x-for="(entry, index) in entries" :key="index">
+            <li class="flex items-center gap-3 py-2.5 group">
+              <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" :style="`background: ${entryColor(index)}`"></span>
 
+              <template x-if="editingIndex === index">
+                <input
+                  x-init="$el.focus()"
+                  x-model="editingValue"
+                  @keydown.enter="saveEdit()"
+                  @keydown.escape="cancelEdit()"
+                  @blur="saveEdit()"
+                  maxlength="40"
+                  class="flex-1 min-w-0 rounded border border-slate-300 px-2 py-0.5 text-sm text-slate-900 focus:outline-none focus:border-indigo-400"
+                >
+              </template>
+              <template x-if="editingIndex !== index">
+                <span class="flex-1 min-w-0 truncate text-sm text-slate-800" x-text="entry"></span>
+              </template>
+
+              <div class="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+                <button @click="startEdit(index)" aria-label="Edit entry" class="p-1.5 rounded text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition">
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                </button>
+                <button @click="deleteEntry(index)" :disabled="entries.length <= 2" aria-label="Delete entry" class="p-1.5 rounded text-slate-400 hover:text-red-500 hover:bg-red-50 transition disabled:opacity-30 disabled:cursor-not-allowed">
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                </button>
+              </div>
+            </li>
+          </template>
+        </ul>
+
+        <!-- Settings -->
+        <div class="mt-8">
+          <h2 class="font-bold text-slate-900 mb-1">Settings</h2>
+
+          <div class="divide-y divide-slate-100">
+
+            <!-- Segment count -->
+            <div class="flex items-center justify-between py-3">
+              <span class="text-sm text-slate-600">Number of segments</span>
+              <span class="text-sm font-semibold text-slate-900" x-text="entries.length"></span>
+            </div>
+
+            <!-- Wheel style -->
+            <div class="py-3">
+              <span class="text-sm text-slate-600 block mb-3">Wheel style</span>
+              <div class="flex gap-2.5">
+                <button @click="stylePreset = 'vivid'" class="w-12 h-12 rounded-xl p-1 border-2 transition" :class="stylePreset === 'vivid' ? 'border-indigo-500' : 'border-slate-200 hover:border-slate-300'" aria-label="Vivid colors">
+                  <div class="w-full h-full rounded-full" style="background: conic-gradient(#a78bfa 0deg 90deg, #f472b6 90deg 180deg, #fb923c 180deg 270deg, #60a5fa 270deg 360deg)"></div>
+                </button>
+                <button @click="stylePreset = 'pastel'" class="w-12 h-12 rounded-xl p-1 border-2 transition" :class="stylePreset === 'pastel' ? 'border-indigo-500' : 'border-slate-200 hover:border-slate-300'" aria-label="Pastel colors">
+                  <div class="w-full h-full rounded-full" style="background: conic-gradient(#c4b5fd 0deg 90deg, #f9a8d4 90deg 180deg, #fdba74 180deg 270deg, #bfdbfe 270deg 360deg)"></div>
+                </button>
+                <button @click="stylePreset = 'mono'" class="w-12 h-12 rounded-xl p-1 border-2 transition" :class="stylePreset === 'mono' ? 'border-indigo-500' : 'border-slate-200 hover:border-slate-300'" aria-label="Monochrome colors">
+                  <div class="w-full h-full rounded-full" style="background: conic-gradient(#94a3b8 0deg 90deg, #cbd5e1 90deg 180deg, #64748b 180deg 270deg, #475569 270deg 360deg)"></div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Spin duration -->
+            <div class="py-3">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-sm text-slate-600">Spin duration</span>
+                <span class="text-sm font-semibold text-slate-900" x-text="spinDuration + 's'"></span>
+              </div>
+              <input type="range" min="1" max="10" step="1" x-model.number="spinDuration" class="w-full accent-indigo-500" aria-label="Spin duration">
+            </div>
+
+          </div>
+        </div>
       </div>
-      <div class="border-t border-white/5 px-4 py-5 text-center text-xs text-slate-600">
-        &copy; <span x-text="new Date().getFullYear()"></span> TheWheelSpinner &mdash; Free to use, no sign-up required.
-      </div>
-    </footer>
+    </aside>
   </div>
 
-  <script src="./script.js"></script>
+  <!-- ── Footer ─────────────────────────────────────────────── -->
+  <footer class="border-t border-slate-200 bg-white">
+    <div class="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-10 sm:px-6 md:flex-row md:gap-16">
+      <div class="flex-1">
+        <p class="text-base font-extrabold tracking-tight text-slate-800">TheWheelSpinner</p>
+        <p class="mt-2 text-sm leading-relaxed text-slate-500">A free, customizable wheel spinner for making random decisions. Add your own entries, pick a color style, tweak the spin speed, and let the wheel decide — great for giveaways, classroom picks, game nights, and more.</p>
+      </div>
+      <div>
+        <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Features</p>
+        <ul class="mt-3 space-y-1.5 text-sm text-slate-500">
+          <li>Up to 20 custom entries</li>
+          <li>3 color styles</li>
+          <li>Adjustable spin speed</li>
+          <li>Shuffle &amp; sort entries</li>
+          <li>Settings saved automatically</li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Use cases</p>
+        <ul class="mt-3 space-y-1.5 text-sm text-slate-500">
+          <li>Giveaways &amp; contests</li>
+          <li>Classroom random picker</li>
+          <li>Game night decisions</li>
+          <li>Team assignments</li>
+          <li>What to eat tonight</li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-slate-100 px-4 py-5 text-center text-xs text-slate-400">
+      &copy; <span x-text="new Date().getFullYear()"></span> TheWheelSpinner &mdash; Free to use, no sign-up required.
+    </div>
+  </footer>
+
+</div>
+
+<script src="./script.js"></script>
 </body>
 </html>
