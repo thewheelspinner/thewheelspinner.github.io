@@ -84,10 +84,11 @@
       <div class="wheel-pointer" aria-hidden="true"></div>
 
       <div class="wheel-frame">
-        <div id="wheel" class="wheel" :style="wheelStyle"></div>
-        <template x-for="(entry, index) in entries" :key="index">
-          <span class="wheel-label" :style="labelStyle(index)" x-text="entry"></span>
-        </template>
+        <div id="wheel" class="wheel" :style="wheelStyle">
+          <template x-for="(entry, index) in entries" :key="index">
+            <span class="wheel-label" :style="labelStyle(index)" x-text="entry"></span>
+          </template>
+        </div>
         <button type="button" class="wheel-center" @click="spin()" :disabled="spinning" :aria-label="spinning ? 'Spinning' : 'Spin the wheel'">
           <span x-text="spinning ? '...' : 'Spin'"></span>
         </button>
