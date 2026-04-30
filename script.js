@@ -9,8 +9,24 @@ function wheelApp() {
     mono:   ['#64748b', '#475569', '#94a3b8', '#334155', '#6b7280', '#4b5563', '#9ca3af', '#374151']
   };
 
+  const LISTS = {
+    'Yes / No':             ['Yes', 'No'],
+    'Yes / No / Maybe':     ['Yes', 'No', 'Maybe'],
+    'Rock Paper Scissors':  ['Rock', 'Paper', 'Scissors'],
+    'Compass Directions':   ['North', 'South', 'East', 'West'],
+    'Numbers 1–8':          ['1', '2', '3', '4', '5', '6', '7', '8'],
+    'Days of the Week':     ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    'Months':               ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    'Fruits':               ['Apple', 'Banana', 'Cherry', 'Grape', 'Mango', 'Orange', 'Pear', 'Strawberry'],
+    'Food for Tonight':     ['Pizza', 'Sushi', 'Burger', 'Tacos', 'Pasta', 'Ramen', 'Salad', 'Steak'],
+    'Team Colors':          ['Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Orange'],
+    'Coin Flip':            ['Heads', 'Tails'],
+    'Priority':             ['Do it now', 'Schedule it', 'Delegate it', 'Drop it'],
+  };
+
   return {
     entries: ['Alex', 'Bella', 'Chris', 'David', 'Emma', 'Frank', 'Grace', 'Henry'],
+    lists: LISTS,
     rotation: 0,
     spinning: false,
     winnerLabel: '',
@@ -87,6 +103,15 @@ function wheelApp() {
     },
 
     // ── Entry CRUD ──────────────────────────────────────────────
+
+    loadPreset(name) {
+      const preset = LISTS[name];
+      if (!preset) return;
+      this.entries = [...preset];
+      this.winnerLabel = '';
+      this.persist();
+      track('preset_loaded', { preset: name, entries_count: preset.length });
+    },
 
     addEntry() {
       const val = this.newEntryValue.trim();
