@@ -24,6 +24,14 @@ function wheelApp() {
     'Priority':             ['Do it now', 'Schedule it', 'Delegate it', 'Drop it'],
   };
 
+  // slug → entries lookup used by URL-based preset loading
+  const SLUG_MAP = Object.fromEntries(
+    Object.entries(LISTS).map(([name, entries]) => [
+      name.toLowerCase().replace(/[–—]/g, '-').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''),
+      entries
+    ])
+  );
+
   return {
     entries: ['Alex', 'Bella', 'Chris', 'David', 'Emma', 'Frank', 'Grace', 'Henry'],
     lists: LISTS,
@@ -43,16 +51,24 @@ function wheelApp() {
     newEntryValue: '',
 
     init() {
-      try {
-        const saved = JSON.parse(localStorage.getItem('wheelApp') || 'null');
-        if (saved) {
-          if (Array.isArray(saved.entries) && saved.entries.length >= 2) this.entries = saved.entries;
-          if (saved.stylePreset && PRESETS[saved.stylePreset]) this.stylePreset = saved.stylePreset;
-          if (saved.spinDuration) this.spinDuration = saved.spinDuration;
-          if (saved.minRounds) this.minRounds = saved.minRounds;
-          if (saved.maxRounds) this.maxRounds = saved.maxRounds;
-        }
-      } catch (_) {}
+      // Preset pages set window.__PRESET__; also support ?preset=slug on root
+      const presetSlug = (window.__PRESET__ || new URLSearchParams(location.search).get('preset') || '').trim();
+
+      if (presetSlug && SLUG_MAP[presetSlug]) {
+        this.entries = [...SLUG_MAP[presetSlug]];
+        track('preset_page_loaded', { preset: presetSlug });
+      } else {
+        try {
+          const saved = JSON.parse(localStorage.getItem('wheelApp') || 'null');
+          if (saved) {
+            if (Array.isArray(saved.entries) && saved.entries.length >= 2) this.entries = saved.entries;
+            if (saved.stylePreset && PRESETS[saved.stylePreset]) this.stylePreset = saved.stylePreset;
+            if (saved.spinDuration) this.spinDuration = saved.spinDuration;
+            if (saved.minRounds) this.minRounds = saved.minRounds;
+            if (saved.maxRounds) this.maxRounds = saved.maxRounds;
+          }
+        } catch (_) {}
+      }
 
       this.$watch('stylePreset', (val) => {
         this.persist();
@@ -62,6 +78,8 @@ function wheelApp() {
     },
 
     persist() {
+      // Preset pages always reload fresh — don't bleed into root localStorage
+      if (window.__PRESET__) return;
       try {
         localStorage.setItem('wheelApp', JSON.stringify({
           entries: this.entries,
