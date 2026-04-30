@@ -40,7 +40,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css">
-  <script src="https://unpkg.com/alpinejs" defer></script>
+  <script src="https://unpkg.com/alpinejs@3/dist/cdn.min.js" defer></script>
+  <script>
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog && window.posthog.__loaded)||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="Ei Ni init zi Gi Nr Ui Xi Vi capture calculateEventProperties tn register register_once register_for_session unregister unregister_for_session an getFeatureFlag getFeatureFlagPayload getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey cancelPendingSurvey canRenderSurvey canRenderSurveyAsync ln identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset setIdentity clearIdentity get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException addExceptionStep captureLog startExceptionAutocapture stopExceptionAutocapture loadToolbar get_property getSessionProperty nn Qi createPersonProfile setInternalOrTestUser sn qi cn opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing Ji debug Fr rn getPageViewId captureTraceFeedback captureTraceMetric Bi".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init('phc_D6JeJmFJuSMfHa8rEazKGnr5U2s9YrXtsMgjNQWtMott', {
+        api_host: 'https://us.i.posthog.com',
+        defaults: '2026-01-30',
+        person_profiles: 'identified_only',
+    })
+  </script>
 </head>
 <body class="min-h-screen bg-slate-950 text-slate-100 antialiased">
   <div class="page-glow"></div>
@@ -50,11 +58,11 @@
       <nav class="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
         <a href="#top" class="text-lg font-extrabold tracking-tight text-cyan-300">TheWheelSpinner</a>
         <div class="hidden items-center gap-6 text-sm font-semibold sm:flex">
-          <a href="#play" class="text-slate-300 transition hover:text-cyan-300">Play</a>
-          <a href="#how" class="text-slate-300 transition hover:text-cyan-300">How it works</a>
-          <a href="#customize" class="text-slate-300 transition hover:text-cyan-300">Customize</a>
+          <a href="#play" @click="track('nav_clicked', { link: 'play' })" class="text-slate-300 transition hover:text-cyan-300">Play</a>
+          <a href="#how" @click="track('nav_clicked', { link: 'how_it_works' })" class="text-slate-300 transition hover:text-cyan-300">How it works</a>
+          <a href="#customize" @click="track('nav_clicked', { link: 'customize' })" class="text-slate-300 transition hover:text-cyan-300">Customize</a>
         </div>
-        <button @click="spin()" :disabled="spinning" class="rounded-full bg-cyan-400 px-4 py-2 text-sm font-bold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-50">
+        <button @click="spin()" :disabled="spinning" :aria-label="spinning ? 'Spinning' : 'Quick spin'" class="rounded-full bg-cyan-400 px-4 py-2 text-sm font-bold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-50">
           <span x-text="spinning ? 'Spinning...' : 'Quick Spin'"></span>
         </button>
       </nav>
@@ -71,8 +79,8 @@
             </div>
           </div>
           <div class="!mt-8 flex flex-wrap gap-3">
-            <button @click="spin()" :disabled="spinning" class="rounded-xl bg-emerald-400 px-5 py-3 text-sm font-extrabold uppercase tracking-wide text-emerald-950 transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-50">Spin the wheel</button>
-            <button @click="shuffleEntries()" class="rounded-xl border border-slate-500 px-5 py-3 text-sm font-bold text-slate-100 transition hover:border-cyan-300 hover:text-cyan-300">Shuffle entries</button>
+            <button @click="spin()" :disabled="spinning" :aria-label="spinning ? 'Spinning' : 'Spin the wheel'" class="rounded-xl bg-emerald-400 px-5 py-3 text-sm font-extrabold uppercase tracking-wide text-emerald-950 transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-50">Spin the wheel</button>
+            <button @click="shuffleEntries()" :disabled="spinning" aria-label="Shuffle entries" class="rounded-xl border border-slate-500 px-5 py-3 text-sm font-bold text-slate-100 transition hover:border-cyan-300 hover:text-cyan-300 disabled:cursor-not-allowed disabled:opacity-50">Shuffle entries</button>
           </div>
           <p class="!mt-6 text-xl font-bold text-amber-300" x-show="winnerLabel" x-transition>
             Winner: <span x-text="winnerLabel"></span>
@@ -86,7 +94,7 @@
                 <span class="wheel-label" :style="labelStyle(index)" x-text="entry"></span>
               </template>
             </div>
-            <button type="button" class="wheel-center" @click="spin()" :disabled="spinning">
+            <button type="button" class="wheel-center" @click="spin()" :disabled="spinning" :aria-label="spinning ? 'Spinning' : 'Spin the wheel'">
               <span x-text="spinning ? '...' : 'SPIN'"></span>
             </button>
             <div class="wheel-pointer"></div>
@@ -100,7 +108,7 @@
           <p class="mt-2 text-sm text-slate-300">Customize entries, palette, and spin physics.</p>
 
           <label class="mt-5 block text-xs font-bold uppercase tracking-wider text-slate-300">Entries (one per line)</label>
-          <textarea x-model="entriesInput" @input="syncEntries()" class="mt-2 h-36 w-full rounded-xl border border-slate-700 bg-slate-950/70 p-3 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none" placeholder="Pizza&#10;Sushi&#10;Burger"></textarea>
+          <textarea x-model="entriesInput" @input.debounce.250ms="syncEntries()" aria-label="Wheel entries, one per line" class="mt-2 h-36 w-full rounded-xl border border-slate-700 bg-slate-950/70 p-3 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none" placeholder="Pizza&#10;Sushi&#10;Burger"></textarea>
 
           <div class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <label class="block">
@@ -140,6 +148,42 @@
         </article>
       </section>
     </main>
+
+    <footer class="mt-16 border-t border-white/10 bg-slate-950/60">
+      <div class="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-10 sm:px-6 md:flex-row md:gap-16">
+
+        <div class="flex-1">
+          <p class="text-base font-extrabold tracking-tight text-cyan-300">TheWheelSpinner</p>
+          <p class="mt-2 text-sm leading-relaxed text-slate-400">A free, customizable wheel spinner for making random decisions. Add your own entries, pick a color theme, tweak the spin physics, and let the wheel decide — great for giveaways, classroom picks, game nights, and more.</p>
+        </div>
+
+        <div>
+          <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Features</p>
+          <ul class="mt-3 space-y-1.5 text-sm text-slate-400">
+            <li>Up to 20 custom entries</li>
+            <li>3 color themes</li>
+            <li>Adjustable spin speed &amp; rounds</li>
+            <li>Shuffle entries randomly</li>
+            <li>Settings saved automatically</li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Use cases</p>
+          <ul class="mt-3 space-y-1.5 text-sm text-slate-400">
+            <li>Giveaways &amp; contests</li>
+            <li>Classroom random picker</li>
+            <li>Game night decisions</li>
+            <li>Team assignments</li>
+            <li>What to eat tonight</li>
+          </ul>
+        </div>
+
+      </div>
+      <div class="border-t border-white/5 px-4 py-5 text-center text-xs text-slate-600">
+        &copy; <span x-text="new Date().getFullYear()"></span> TheWheelSpinner &mdash; Free to use, no sign-up required.
+      </div>
+    </footer>
   </div>
 
   <script src="./script.js"></script>

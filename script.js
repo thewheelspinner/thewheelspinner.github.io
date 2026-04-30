@@ -1,3 +1,7 @@
+function track(event, props) {
+  if (window.posthog) window.posthog.capture(event, props);
+}
+
 function wheelApp() {
   return {
     entries: ['Pizza', 'Sushi', 'Burger', 'Tacos', 'Pasta', 'Salad', 'Ramen', 'Steak'],
@@ -28,9 +32,56 @@ function wheelApp() {
     },
 
     init() {
+      try {
+        const saved = JSON.parse(localStorage.getItem('wheelApp') || 'null');
+        if (saved) {
+          if (Array.isArray(saved.entries) && saved.entries.length >= 2) this.entries = saved.entries;
+          if (saved.activeTheme && this.themes[saved.activeTheme]) this.activeTheme = saved.activeTheme;
+          if (saved.spinDuration) this.spinDuration = saved.spinDuration;
+          if (saved.minRounds) this.minRounds = saved.minRounds;
+          if (saved.maxRounds) this.maxRounds = saved.maxRounds;
+        }
+      } catch (_) {}
+
       this.entriesInput = this.entries.join('\n');
       this.applyThemeBackground();
-      this.$watch('activeTheme', () => this.applyThemeBackground());
+
+      this.$watch('activeTheme', (newVal, oldVal) => {
+        this.applyThemeBackground();
+        this.persist();
+        track('theme_changed', {
+          from: oldVal,
+          to: newVal,
+          theme_name: this.themes[newVal]?.name
+        });
+      });
+
+      this.$watch('spinDuration', (newVal, oldVal) => {
+        this.persist();
+        track('spin_duration_changed', { from: oldVal, to: newVal });
+      });
+
+      this.$watch('minRounds', (newVal, oldVal) => {
+        this.persist();
+        track('rounds_changed', { type: 'min', from: oldVal, to: newVal });
+      });
+
+      this.$watch('maxRounds', (newVal, oldVal) => {
+        this.persist();
+        track('rounds_changed', { type: 'max', from: oldVal, to: newVal });
+      });
+    },
+
+    persist() {
+      try {
+        localStorage.setItem('wheelApp', JSON.stringify({
+          entries: this.entries,
+          activeTheme: this.activeTheme,
+          spinDuration: this.spinDuration,
+          minRounds: this.minRounds,
+          maxRounds: this.maxRounds
+        }));
+      } catch (_) {}
     },
 
     get wheelStyle() {
@@ -38,8 +89,8 @@ function wheelApp() {
       const angle = 360 / this.entries.length;
       const stops = this.entries
         .map((_, index) => {
-          const start = (index * angle).toFixed(3);
-          const end = ((index + 1) * angle).toFixed(3);
+          const start = Math.round(index * angle);
+          const end = Math.round((index + 1) * angle);
           const color = colors[index % colors.length];
           return `${color} ${start}deg ${end}deg`;
         })
@@ -77,7 +128,18 @@ function wheelApp() {
         .slice(0, 20);
 
       if (next.length >= 2) {
+        const added = next.filter(e => !this.entries.includes(e));
+        const removed = this.entries.filter(e => !next.includes(e));
         this.entries = next;
+        this.persist();
+        track('entries_updated', {
+          entries_count: next.length,
+          entries: next,
+          added,
+          removed,
+          added_count: added.length,
+          removed_count: removed.length
+        });
       }
     },
 
@@ -110,9 +172,27 @@ function wheelApp() {
       const target = rounds * 360 + correction;
       this.rotation += target;
 
+      track('wheel_spun', {
+        entries_count: count,
+        entries: this.entries,
+        theme: this.activeTheme,
+        theme_name: this.themes[this.activeTheme]?.name,
+        spin_duration: this.spinDuration,
+        rounds_min: this.minRounds,
+        rounds_max: this.maxRounds,
+        rounds_actual: rounds
+      });
+
       window.setTimeout(() => {
         this.winnerLabel = this.entries[winnerIndex];
         this.spinning = false;
+        track('winner_revealed', {
+          winner: this.winnerLabel,
+          winner_index: winnerIndex,
+          entries_count: count,
+          entries: this.entries,
+          theme: this.activeTheme
+        });
       }, this.spinDuration * 1000 + 80);
     },
 
@@ -121,12 +201,20 @@ function wheelApp() {
         return;
       }
 
+      const before = [...this.entries];
       for (let i = this.entries.length - 1; i > 0; i -= 1) {
         const j = Math.floor(Math.random() * (i + 1));
         [this.entries[i], this.entries[j]] = [this.entries[j], this.entries[i]];
       }
 
       this.entriesInput = this.entries.join('\n');
+      this.persist();
+
+      track('entries_shuffled', {
+        entries_count: this.entries.length,
+        entries_before: before,
+        entries_after: [...this.entries]
+      });
     }
   };
 }
