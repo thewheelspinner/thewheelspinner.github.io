@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food for Tonight Wheel Spinner | TheWheelSpinner</title>
+  <meta name="description" content="Free online Food for Tonight wheel spinner. Spin to randomly pick: Pizza, Sushi, Burger, Tacos, Pasta, Ramen….">
+  <link rel="canonical" href="https://thewheelspinner.github.io/food-for-tonight/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Food for Tonight Wheel Spinner | TheWheelSpinner">
+  <meta property="og:description" content="Free online Food for Tonight wheel spinner. Spin to randomly pick: Pizza, Sushi, Burger, Tacos, Pasta, Ramen….">
+  <meta property="og:url" content="https://thewheelspinner.github.io/food-for-tonight/">
+  <meta property="og:image" content="https://thewheelspinner.github.io/assets/og/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:video" content="https://thewheelspinner.github.io/assets/og/spinner-preview.mp4">
+  <meta property="og:video:type" content="video/mp4">
+  <meta property="og:video:width" content="720">
+  <meta property="og:video:height" content="720">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Food for Tonight Wheel Spinner | TheWheelSpinner">
+  <meta name="twitter:description" content="Free online Food for Tonight wheel spinner. Spin to randomly pick: Pizza, Sushi, Burger, Tacos, Pasta, Ramen….">
+  <meta name="twitter:image" content="https://thewheelspinner.github.io/assets/og/og-image.png">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <script>
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog && window.posthog.__loaded)||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="Ei Ni init zi Gi Nr Ui Xi Vi capture calculateEventProperties tn register register_once register_for_session unregister unregister_for_session an getFeatureFlag getFeatureFlagPayload getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey cancelPendingSurvey canRenderSurvey canRenderSurveyAsync ln identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset setIdentity clearIdentity get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException addExceptionStep captureLog startExceptionAutocapture stopExceptionAutocapture loadToolbar get_property getSessionProperty nn Qi createPersonProfile setInternalOrTestUser sn qi cn opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing Ji debug Fr rn getPageViewId captureTraceFeedback captureTraceMetric Bi".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init('phc_D6JeJmFJuSMfHa8rEazKGnr5U2s9YrXtsMgjNQWtMott', {
+        api_host: 'https://us.i.posthog.com',
+        defaults: '2026-01-30',
+        person_profiles: 'identified_only',
+    })
+  </script>
+  <script>window.__PRESET__='food-for-tonight';</script>
+
+  <script src="https://unpkg.com/alpinejs@3/dist/cdn.min.js" defer></script>
+</head>
+<body class="bg-slate-100 antialiased text-slate-900" style="font-family: 'Sora', ui-sans-serif, system-ui">
+
+<div x-data="wheelApp()">
+
+  <!-- ── Header ─────────────────────────────────────────────── -->
+  <header class="fixed top-0 inset-x-0 z-30 h-14 bg-white border-b border-slate-200 flex items-center px-4 sm:px-6 gap-4">
+    <div class="flex items-center gap-2.5 flex-1 min-w-0">
+      <!-- Wheel logo -->
+      <svg viewBox="0 0 32 32" class="w-7 h-7 flex-shrink-0" aria-hidden="true">
+        <circle cx="16" cy="16" r="15" fill="#f1f5f9"/>
+        <path d="M16 16 L16 1 A15 15 0 0 1 31 16 Z" fill="#a78bfa"/>
+        <path d="M16 16 L31 16 A15 15 0 0 1 16 31 Z" fill="#f472b6"/>
+        <path d="M16 16 L16 31 A15 15 0 0 1 1 16 Z" fill="#fb923c"/>
+        <path d="M16 16 L1 16 A15 15 0 0 1 16 1 Z" fill="#60a5fa"/>
+        <circle cx="16" cy="16" r="5.5" fill="white"/>
+      </svg>
+      <span class="font-extrabold text-slate-800 text-base tracking-tight truncate">Wheel Spinner</span>
+    </div>
+
+    <div class="flex items-center gap-0.5 flex-shrink-0">
+      <button @click="newWheel()" :disabled="spinning" class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-slate-600 font-medium hover:bg-slate-100 transition disabled:opacity-40" aria-label="New wheel">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        <span class="hidden sm:inline">New</span>
+      </button>
+      <button @click="saveEntries()" class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-slate-600 font-medium hover:bg-slate-100 transition" aria-label="Save entries as text file">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        <span class="hidden sm:inline">Save</span>
+      </button>
+      <button @click="shareWheel()" class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium hover:bg-slate-100 transition" :class="copied ? 'text-emerald-600' : 'text-slate-600'" aria-label="Copy link to clipboard">
+        <svg x-show="!copied" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        <svg x-show="copied" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        <span class="hidden sm:inline" x-text="copied ? 'Copied!' : 'Share'"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ── App body ────────────────────────────────────────────── -->
+  <div class="pt-14 flex flex-col lg:flex-row min-h-[calc(100vh-3.5rem)]">
+
+    <!-- Left: Wheel area -->
+    <main class="flex-1 flex flex-col items-center justify-center py-10 px-4 gap-4">
+
+      <div class="wheel-pointer" aria-hidden="true"></div>
+
+      <div class="wheel-frame">
+        <div id="wheel" class="wheel" :style="wheelStyle">
+          <template x-for="(entry, index) in entries" :key="index">
+            <span class="wheel-label" :style="labelStyle(index)" x-text="entry"></span>
+          </template>
+        </div>
+        <button type="button" class="wheel-center" @click="spin()" :disabled="spinning" :aria-label="spinning ? 'Spinning' : 'Spin the wheel'">
+          <span x-text="spinning ? '...' : 'Spin'"></span>
+        </button>
+      </div>
+
+      <div class="h-8 flex items-center justify-center">
+        <p class="text-lg font-extrabold text-slate-800" x-show="winnerLabel" x-transition>
+          🎉 <span x-text="winnerLabel"></span>
+        </p>
+      </div>
+
+      <button @click="resetWheel()" :disabled="spinning" aria-label="Reset wheel" class="flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-2 text-sm font-medium text-slate-600 transition hover:border-slate-400 hover:text-slate-800 disabled:opacity-40 disabled:cursor-not-allowed">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-5.07"/></svg>
+        Reset Wheel
+      </button>
+    </main>
+
+    <!-- Right: Panel -->
+    <aside class="w-full lg:w-[340px] xl:w-96 bg-white border-t lg:border-t-0 lg:border-l border-slate-200 flex-shrink-0 lg:h-[calc(100vh-3.5rem)] lg:overflow-y-auto">
+      <div class="p-5">
+
+        <!-- Entries header -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <h2 class="font-bold text-slate-900">Entries</h2>
+            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-100 text-xs font-bold text-slate-600" x-text="entries.length"></span>
+          </div>
+          <div class="flex items-center gap-0.5">
+            <!-- Presets dropdown -->
+            <div class="relative" x-data="{ open: false }">
+              <button @click="open = !open" :disabled="spinning" title="Load a preset list" aria-label="Load preset list" class="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition disabled:opacity-30">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              </button>
+              <div
+                x-show="open"
+                x-transition
+                @click.outside="open = false"
+                class="absolute right-0 top-full mt-1 w-52 bg-white rounded-xl shadow-lg border border-slate-200 py-1.5 z-20"
+              >
+                <p class="px-3 pb-1.5 pt-0.5 text-xs font-bold uppercase tracking-wider text-slate-400">Presets</p>
+                <template x-for="(preset, name) in lists" :key="name">
+                  <button
+                    @click="loadPreset(name); open = false"
+                    class="flex w-full items-center justify-between gap-3 px-3 py-1.5 text-sm text-slate-700 hover:bg-slate-50 transition text-left"
+                  >
+                    <span x-text="name"></span>
+                    <span class="text-xs text-slate-400 flex-shrink-0" x-text="preset.length + ' items'"></span>
+                  </button>
+                </template>
+              </div>
+            </div>
+            <button @click="shuffleEntries()" :disabled="spinning" title="Shuffle" aria-label="Shuffle entries" class="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition disabled:opacity-30">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+            </button>
+            <button @click="sortEntries()" :disabled="spinning" title="Sort A–Z" aria-label="Sort entries A to Z" class="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition disabled:opacity-30">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="9" y2="18"/></svg>
+            </button>
+            <button @click="showAddInput = !showAddInput; newEntryValue = ''" :disabled="entries.length >= 20" title="Add entry" aria-label="Add entry" class="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition disabled:opacity-30">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Add entry input -->
+        <template x-if="showAddInput">
+          <div class="mt-3 flex gap-2">
+            <input
+              x-init="$el.focus()"
+              x-model="newEntryValue"
+              @keydown.enter="addEntry()"
+              @keydown.escape="showAddInput = false; newEntryValue = ''"
+              placeholder="Type and press Enter…"
+              maxlength="40"
+              class="flex-1 min-w-0 rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400"
+            >
+            <button @click="addEntry()" class="flex-shrink-0 rounded-lg bg-indigo-500 px-3 py-2 text-xs font-bold text-white hover:bg-indigo-600 transition">Add</button>
+          </div>
+        </template>
+
+        <!-- Entries list -->
+        <ul class="mt-3 divide-y divide-slate-100">
+          <template x-for="(entry, index) in entries" :key="index">
+            <li class="flex items-center gap-3 py-2.5 group">
+              <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" :style="`background: ${entryColor(index)}`"></span>
+
+              <template x-if="editingIndex === index">
+                <input
+                  x-init="$el.focus()"
+                  x-model="editingValue"
+                  @keydown.enter="saveEdit()"
+                  @keydown.escape="cancelEdit()"
+                  @blur="saveEdit()"
+                  maxlength="40"
+                  class="flex-1 min-w-0 rounded border border-slate-300 px-2 py-0.5 text-sm text-slate-900 focus:outline-none focus:border-indigo-400"
+                >
+              </template>
+              <template x-if="editingIndex !== index">
+                <span class="flex-1 min-w-0 truncate text-sm text-slate-800" x-text="entry"></span>
+              </template>
+
+              <div class="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+                <button @click="startEdit(index)" aria-label="Edit entry" class="p-1.5 rounded text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition">
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                </button>
+                <button @click="deleteEntry(index)" :disabled="entries.length <= 2" aria-label="Delete entry" class="p-1.5 rounded text-slate-400 hover:text-red-500 hover:bg-red-50 transition disabled:opacity-30 disabled:cursor-not-allowed">
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                </button>
+              </div>
+            </li>
+          </template>
+        </ul>
+
+        <!-- Settings -->
+        <div class="mt-8">
+          <h2 class="font-bold text-slate-900 mb-1">Settings</h2>
+
+          <div class="divide-y divide-slate-100">
+
+            <!-- Segment count -->
+            <div class="flex items-center justify-between py-3">
+              <span class="text-sm text-slate-600">Number of segments</span>
+              <span class="text-sm font-semibold text-slate-900" x-text="entries.length"></span>
+            </div>
+
+            <!-- Wheel style -->
+            <div class="py-3">
+              <span class="text-sm text-slate-600 block mb-3">Wheel style</span>
+              <div class="flex gap-2.5">
+                <button @click="stylePreset = 'vivid'" class="w-12 h-12 rounded-xl p-1 border-2 transition" :class="stylePreset === 'vivid' ? 'border-indigo-500' : 'border-slate-200 hover:border-slate-300'" aria-label="Vivid colors">
+                  <div class="w-full h-full rounded-full" style="background: conic-gradient(#a78bfa 0deg 90deg, #f472b6 90deg 180deg, #fb923c 180deg 270deg, #60a5fa 270deg 360deg)"></div>
+                </button>
+                <button @click="stylePreset = 'pastel'" class="w-12 h-12 rounded-xl p-1 border-2 transition" :class="stylePreset === 'pastel' ? 'border-indigo-500' : 'border-slate-200 hover:border-slate-300'" aria-label="Pastel colors">
+                  <div class="w-full h-full rounded-full" style="background: conic-gradient(#c4b5fd 0deg 90deg, #f9a8d4 90deg 180deg, #fdba74 180deg 270deg, #bfdbfe 270deg 360deg)"></div>
+                </button>
+                <button @click="stylePreset = 'mono'" class="w-12 h-12 rounded-xl p-1 border-2 transition" :class="stylePreset === 'mono' ? 'border-indigo-500' : 'border-slate-200 hover:border-slate-300'" aria-label="Monochrome colors">
+                  <div class="w-full h-full rounded-full" style="background: conic-gradient(#94a3b8 0deg 90deg, #cbd5e1 90deg 180deg, #64748b 180deg 270deg, #475569 270deg 360deg)"></div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Spin duration -->
+            <div class="py-3">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-sm text-slate-600">Spin duration</span>
+                <span class="text-sm font-semibold text-slate-900" x-text="spinDuration + 's'"></span>
+              </div>
+              <input type="range" min="1" max="10" step="1" x-model.number="spinDuration" class="w-full accent-indigo-500" aria-label="Spin duration">
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ── Footer ─────────────────────────────────────────────── -->
+  <footer class="border-t border-slate-200 bg-white">
+    <div class="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-10 sm:px-6 md:flex-row md:gap-16">
+      <div class="flex-1">
+        <p class="text-base font-extrabold tracking-tight text-slate-800">TheWheelSpinner</p>
+        <p class="mt-2 text-sm leading-relaxed text-slate-500">A free, customizable wheel spinner for making random decisions. Add your own entries, pick a color style, tweak the spin speed, and let the wheel decide — great for giveaways, classroom picks, game nights, and more.</p>
+      </div>
+      <div>
+        <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Features</p>
+        <ul class="mt-3 space-y-1.5 text-sm text-slate-500">
+          <li>Up to 20 custom entries</li>
+          <li>3 color styles</li>
+          <li>Adjustable spin speed</li>
+          <li>Shuffle &amp; sort entries</li>
+          <li>Settings saved automatically</li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Use cases</p>
+        <ul class="mt-3 space-y-1.5 text-sm text-slate-500">
+          <li>Giveaways &amp; contests</li>
+          <li>Classroom random picker</li>
+          <li>Game night decisions</li>
+          <li>Team assignments</li>
+          <li>What to eat tonight</li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-slate-100 px-4 py-5 text-center text-xs text-slate-400">
+      &copy; <span x-text="new Date().getFullYear()"></span> TheWheelSpinner &mdash; Free to use, no sign-up required.
+    </div>
+  </footer>
+
+</div>
+
+<script src="../script.js"></script>
+</body>
+</html>
