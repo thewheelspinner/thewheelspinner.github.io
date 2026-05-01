@@ -47,9 +47,11 @@ function wheelApp() {
 
   return {
     entries: ['Alex', 'Bella', 'Chris', 'David', 'Emma', 'Frank', 'Grace', 'Henry'],
+    customColors: [], // sparse parallel array — per-entry hex overrides
     lists: LISTS,
     rotation: 0,
     spinning: false,
+    idling: false,      // true while the ambient idle rotation RAF is driving the wheel
     winnerLabel: '',
     spinDuration: 3,
     minRounds: 5,
@@ -62,6 +64,7 @@ function wheelApp() {
     editingValue: '',
     showAddInput: false,
     newEntryValue: '',
+    newEntryColor: '',
 
     // When entries < 4, repeat them to fill the wheel (at least 6 segments).
     // The list panel still shows only the canonical entries.
@@ -75,17 +78,18 @@ function wheelApp() {
     },
 
     init() {
-      // Preset pages set window.__PRESET__; also support ?preset=slug on root
       const presetSlug = (window.__PRESET__ || new URLSearchParams(location.search).get('preset') || '').trim();
 
       if (presetSlug && SLUG_MAP[presetSlug]) {
         this.entries = [...SLUG_MAP[presetSlug]];
+        this.customColors = [];
         track('preset_page_loaded', { preset: presetSlug });
       } else {
         try {
           const saved = JSON.parse(localStorage.getItem('wheelApp') || 'null');
           if (saved) {
             if (Array.isArray(saved.entries) && saved.entries.length >= 2) this.entries = saved.entries;
+            if (Array.isArray(saved.customColors)) this.customColors = saved.customColors;
             if (saved.stylePreset && PRESETS[saved.stylePreset]) this.stylePreset = saved.stylePreset;
             if (saved.spinDuration) this.spinDuration = saved.spinDuration;
             if (saved.minRounds) this.minRounds = saved.minRounds;
@@ -99,14 +103,35 @@ function wheelApp() {
         track('style_changed', { preset: val });
       });
       this.$watch('spinDuration', () => this.persist());
+
+      this._startIdleAnimation();
+    },
+
+    _startIdleAnimation() {
+      let last = null;
+      const tick = (ts) => {
+        if (!this.spinning) {
+          if (last !== null) {
+            // 360° per 30 000 ms — one slow revolution every 30 s
+            this.rotation += (ts - last) * (360 / 30000);
+          }
+          last = ts;
+          this.idling = true;
+        } else {
+          last = null;
+          this.idling = false;
+        }
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
     },
 
     persist() {
-      // Preset pages always reload fresh — don't bleed into root localStorage
       if (window.__PRESET__) return;
       try {
         localStorage.setItem('wheelApp', JSON.stringify({
           entries: this.entries,
+          customColors: this.customColors,
           stylePreset: this.stylePreset,
           spinDuration: this.spinDuration,
           minRounds: this.minRounds,
@@ -115,11 +140,27 @@ function wheelApp() {
       } catch (_) {}
     },
 
+    // Palette color for an entry index, ignoring any overrides (used as color-picker seed)
+    paletteColor(index) {
+      const colors = PRESETS[this.stylePreset] || PRESETS.vivid;
+      return colors[index % colors.length];
+    },
+
+    // Resolved color: named-color > custom override > palette
     entryColor(index) {
       const label = this.entries[index];
       if (NAMED_COLORS[label]) return NAMED_COLORS[label];
-      const colors = PRESETS[this.stylePreset] || PRESETS.vivid;
-      return colors[index % colors.length];
+      if (this.customColors[index]) return this.customColors[index];
+      return this.paletteColor(index);
+    },
+
+    setEntryColor(index, hex) {
+      const arr = [...this.customColors];
+      while (arr.length <= index) arr.push('');
+      // If user picks the palette colour, clear the override so style changes still apply
+      arr[index] = hex === this.paletteColor(index) ? '' : hex;
+      this.customColors = arr;
+      this.persist();
     },
 
     get wheelStyle() {
@@ -132,12 +173,12 @@ function wheelApp() {
         .map((label, i) => {
           const start = Math.round(i * angle);
           const end = Math.round((i + 1) * angle);
-          // Named colour entries (e.g. "Red", "Blue") override the style palette
-          const color = NAMED_COLORS[label] || colors[(i % origLen) % colors.length];
+          const origIdx = i % origLen;
+          const color = NAMED_COLORS[label] || this.customColors[origIdx] || colors[origIdx % colors.length];
           return `${color} ${start}deg ${end}deg`;
         })
         .join(', ');
-      const transition = this.noTransition
+      const transition = (this.noTransition || this.idling)
         ? 'none'
         : `transform ${this.spinDuration}s cubic-bezier(.17,.67,.26,1)`;
       return `background: conic-gradient(from -90deg, ${stops}); transform: rotate(${this.rotation}deg); transition: ${transition};`;
@@ -157,12 +198,12 @@ function wheelApp() {
       const preset = LISTS[name];
       if (!preset) return;
       this.entries = [...preset];
+      this.customColors = [];
       this.winnerLabel = '';
       this.persist();
       track('preset_loaded', { preset: name, entries_count: preset.length });
     },
 
-    // Returns the slug URL for a preset name — used by the dropdown links
     presetUrl(name) {
       return '/' + name.toLowerCase()
         .replace(/[–—]/g, '-')
@@ -173,8 +214,12 @@ function wheelApp() {
     addEntry() {
       const val = this.newEntryValue.trim();
       if (!val || this.entries.length >= 20) return;
+      const colors = [...this.customColors];
+      colors.push(this.newEntryColor || '');
+      this.customColors = colors;
       this.entries = [...this.entries, val];
       this.newEntryValue = '';
+      this.newEntryColor = '';
       this.showAddInput = false;
       this.persist();
       track('entry_added', { entry: val, entries_count: this.entries.length });
@@ -184,6 +229,7 @@ function wheelApp() {
       if (this.entries.length <= 2 || this.spinning) return;
       const removed = this.entries[index];
       this.entries = this.entries.filter((_, i) => i !== index);
+      this.customColors = this.customColors.filter((_, i) => i !== index);
       this.persist();
       track('entry_deleted', { entry: removed, entries_count: this.entries.length });
     },
@@ -215,17 +261,23 @@ function wheelApp() {
     shuffleEntries() {
       if (this.spinning) return;
       const before = [...this.entries];
-      for (let i = this.entries.length - 1; i > 0; i--) {
+      const combined = this.entries.map((e, i) => [e, this.customColors[i] || '']);
+      for (let i = combined.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [this.entries[i], this.entries[j]] = [this.entries[j], this.entries[i]];
+        [combined[i], combined[j]] = [combined[j], combined[i]];
       }
+      this.entries = combined.map(([e]) => e);
+      this.customColors = combined.map(([, c]) => c);
       this.persist();
       track('entries_shuffled', { entries_before: before, entries_after: [...this.entries] });
     },
 
     sortEntries() {
       if (this.spinning) return;
-      this.entries = [...this.entries].sort((a, b) => a.localeCompare(b));
+      const combined = this.entries.map((e, i) => [e, this.customColors[i] || '']);
+      combined.sort(([a], [b]) => a.localeCompare(b));
+      this.entries = combined.map(([e]) => e);
+      this.customColors = combined.map(([, c]) => c);
       this.persist();
       track('entries_sorted', {});
     },
@@ -235,6 +287,7 @@ function wheelApp() {
     newWheel() {
       if (this.spinning) return;
       this.entries = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
+      this.customColors = [];
       this.noTransition = true;
       this.rotation = 0;
       this.winnerLabel = '';
@@ -259,7 +312,6 @@ function wheelApp() {
         navigator.share({ title: document.title, url: window.location.href }).catch(() => {});
         return;
       }
-      // Fallback: copy to clipboard
       navigator.clipboard?.writeText(window.location.href).then(() => {
         this.copied = true;
         setTimeout(() => { this.copied = false; }, 2000);
@@ -286,6 +338,7 @@ function wheelApp() {
     spin() {
       if (this.spinning || this.entries.length < 2) return;
       this.sanitizeRounds();
+      this.idling = false;  // restore transition before the rotation jump
       this.spinning = true;
       this.winnerLabel = '';
 

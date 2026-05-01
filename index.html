@@ -161,12 +161,19 @@
 
         <!-- Add entry input -->
         <template x-if="showAddInput">
-          <div class="mt-3 flex gap-2">
+          <div class="mt-3 flex gap-2 items-center">
+            <label class="w-5 h-5 rounded-full flex-shrink-0 cursor-pointer ring-1 ring-black/10 hover:ring-2 hover:ring-indigo-400 transition-shadow"
+                   :style="`background: ${newEntryColor || paletteColor(entries.length)}`"
+                   title="Pick color">
+              <input type="color" class="sr-only"
+                     :value="newEntryColor || paletteColor(entries.length)"
+                     @change="newEntryColor = $event.target.value">
+            </label>
             <input
               x-init="$el.focus()"
               x-model="newEntryValue"
               @keydown.enter="addEntry()"
-              @keydown.escape="showAddInput = false; newEntryValue = ''"
+              @keydown.escape="showAddInput = false; newEntryValue = ''; newEntryColor = ''"
               placeholder="Type and press Enter…"
               maxlength="40"
               class="flex-1 min-w-0 rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400"
@@ -179,7 +186,13 @@
         <ul class="mt-3 divide-y divide-slate-100">
           <template x-for="(entry, index) in entries" :key="index">
             <li class="flex items-center gap-3 py-2.5 group">
-              <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" :style="`background: ${entryColor(index)}`"></span>
+              <label class="w-3 h-3 rounded-full flex-shrink-0 cursor-pointer hover:ring-2 hover:ring-offset-1 hover:ring-black/20 transition-shadow"
+                     :style="`background: ${entryColor(index)}`"
+                     title="Pick color">
+                <input type="color" class="sr-only"
+                       :value="customColors[index] || entryColor(index)"
+                       @change="setEntryColor(index, $event.target.value)">
+              </label>
 
               <template x-if="editingIndex === index">
                 <input
