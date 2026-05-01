@@ -6,7 +6,20 @@ function wheelApp() {
   const PRESETS = {
     vivid:  ['#a78bfa', '#f472b6', '#fb923c', '#fbbf24', '#2dd4bf', '#60a5fa', '#4ade80', '#e879f9'],
     pastel: ['#c4b5fd', '#f9a8d4', '#fdba74', '#fde68a', '#99f6e4', '#bfdbfe', '#bbf7d0', '#f5d0fe'],
-    mono:   ['#64748b', '#475569', '#94a3b8', '#334155', '#6b7280', '#4b5563', '#9ca3af', '#374151']
+    mono:   ['#64748b', '#475569', '#94a3b8', '#334155', '#6b7280', '#4b5563', '#9ca3af', '#374151'],
+    neon:   ['#ff0055', '#ff8c00', '#ffee00', '#00e676', '#00b0ff', '#aa00ff', '#d500f9', '#00e5ff'],
+    retro:  ['#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3', '#54a0ff', '#5f27cd', '#00d2d3', '#ff9f43'],
+    earth:  ['#c2773a', '#a44a3f', '#7d8c50', '#4a7c59', '#b87333', '#8b6355', '#9aab6f', '#d4956a'],
+  };
+
+  // If an entry label matches a known color name, use it as the segment color
+  // (e.g. "Team Colors" preset). Otherwise the active style palette is used.
+  const NAMED_COLORS = {
+    'Red': '#ef4444', 'Orange': '#f97316', 'Yellow': '#eab308', 'Green': '#22c55e',
+    'Blue': '#3b82f6', 'Purple': '#a855f7', 'Pink': '#ec4899', 'Teal': '#14b8a6',
+    'Cyan': '#06b6d4', 'Lime': '#84cc16', 'Indigo': '#6366f1', 'Violet': '#8b5cf6',
+    'Brown': '#a16207', 'Black': '#374151', 'Gray': '#9ca3af', 'Grey': '#9ca3af',
+    'Gold': '#f59e0b', 'Silver': '#cbd5e1', 'White': '#e2e8f0',
   };
 
   const LISTS = {
@@ -103,6 +116,8 @@ function wheelApp() {
     },
 
     entryColor(index) {
+      const label = this.entries[index];
+      if (NAMED_COLORS[label]) return NAMED_COLORS[label];
       const colors = PRESETS[this.stylePreset] || PRESETS.vivid;
       return colors[index % colors.length];
     },
@@ -114,11 +129,12 @@ function wheelApp() {
       const count = disp.length;
       const angle = 360 / count;
       const stops = disp
-        .map((_, i) => {
+        .map((label, i) => {
           const start = Math.round(i * angle);
           const end = Math.round((i + 1) * angle);
-          // Colour cycles through the original entry count so repeats share colour
-          return `${colors[(i % origLen) % colors.length]} ${start}deg ${end}deg`;
+          // Named colour entries (e.g. "Red", "Blue") override the style palette
+          const color = NAMED_COLORS[label] || colors[(i % origLen) % colors.length];
+          return `${color} ${start}deg ${end}deg`;
         })
         .join(', ');
       const transition = this.noTransition

@@ -223,15 +223,24 @@
             <!-- Wheel style -->
             <div class="py-3">
               <span class="text-sm text-slate-600 block mb-3">Wheel style</span>
-              <div class="flex gap-2.5">
-                <button @click="stylePreset = 'vivid'" class="w-12 h-12 rounded-xl p-1 border-2 transition" :class="stylePreset === 'vivid' ? 'border-indigo-500' : 'border-slate-200 hover:border-slate-300'" aria-label="Vivid colors">
+              <div class="flex gap-2">
+                <button @click="stylePreset = 'vivid'" class="w-10 h-10 rounded-xl p-1 border-2 transition" :class="stylePreset === 'vivid' ? 'border-indigo-500' : 'border-slate-200 hover:border-slate-300'" aria-label="Vivid colors">
                   <div class="w-full h-full rounded-full" style="background: conic-gradient(#a78bfa 0deg 90deg, #f472b6 90deg 180deg, #fb923c 180deg 270deg, #60a5fa 270deg 360deg)"></div>
                 </button>
-                <button @click="stylePreset = 'pastel'" class="w-12 h-12 rounded-xl p-1 border-2 transition" :class="stylePreset === 'pastel' ? 'border-indigo-500' : 'border-slate-200 hover:border-slate-300'" aria-label="Pastel colors">
+                <button @click="stylePreset = 'pastel'" class="w-10 h-10 rounded-xl p-1 border-2 transition" :class="stylePreset === 'pastel' ? 'border-indigo-500' : 'border-slate-200 hover:border-slate-300'" aria-label="Pastel colors">
                   <div class="w-full h-full rounded-full" style="background: conic-gradient(#c4b5fd 0deg 90deg, #f9a8d4 90deg 180deg, #fdba74 180deg 270deg, #bfdbfe 270deg 360deg)"></div>
                 </button>
-                <button @click="stylePreset = 'mono'" class="w-12 h-12 rounded-xl p-1 border-2 transition" :class="stylePreset === 'mono' ? 'border-indigo-500' : 'border-slate-200 hover:border-slate-300'" aria-label="Monochrome colors">
+                <button @click="stylePreset = 'mono'" class="w-10 h-10 rounded-xl p-1 border-2 transition" :class="stylePreset === 'mono' ? 'border-indigo-500' : 'border-slate-200 hover:border-slate-300'" aria-label="Monochrome">
                   <div class="w-full h-full rounded-full" style="background: conic-gradient(#94a3b8 0deg 90deg, #cbd5e1 90deg 180deg, #64748b 180deg 270deg, #475569 270deg 360deg)"></div>
+                </button>
+                <button @click="stylePreset = 'neon'" class="w-10 h-10 rounded-xl p-1 border-2 transition" :class="stylePreset === 'neon' ? 'border-indigo-500' : 'border-slate-200 hover:border-slate-300'" aria-label="Neon colors">
+                  <div class="w-full h-full rounded-full" style="background: conic-gradient(#ff0055 0deg 90deg, #00e676 90deg 180deg, #00b0ff 180deg 270deg, #aa00ff 270deg 360deg)"></div>
+                </button>
+                <button @click="stylePreset = 'retro'" class="w-10 h-10 rounded-xl p-1 border-2 transition" :class="stylePreset === 'retro' ? 'border-indigo-500' : 'border-slate-200 hover:border-slate-300'" aria-label="Retro colors">
+                  <div class="w-full h-full rounded-full" style="background: conic-gradient(#ff6b6b 0deg 90deg, #feca57 90deg 180deg, #48dbfb 180deg 270deg, #5f27cd 270deg 360deg)"></div>
+                </button>
+                <button @click="stylePreset = 'earth'" class="w-10 h-10 rounded-xl p-1 border-2 transition" :class="stylePreset === 'earth' ? 'border-indigo-500' : 'border-slate-200 hover:border-slate-300'" aria-label="Earth tones">
+                  <div class="w-full h-full rounded-full" style="background: conic-gradient(#c2773a 0deg 90deg, #a44a3f 90deg 180deg, #7d8c50 180deg 270deg, #4a7c59 270deg 360deg)"></div>
                 </button>
               </div>
             </div>
