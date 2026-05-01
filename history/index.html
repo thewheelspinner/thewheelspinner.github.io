@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spin History | TheWheelSpinner</title>
+  <meta name="description" content="Your recent wheel spinner results.">
+  <link rel="canonical" href="https://thewheelspinner.github.io/history/">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="bg-slate-100 antialiased text-slate-900" style="font-family: 'Sora', ui-sans-serif, system-ui">
+
+  <!-- ── Header ─────────────────────────────────────────────── -->
+  <header class="fixed top-0 inset-x-0 z-30 h-14 bg-white border-b border-slate-200 flex items-center px-4 sm:px-6 gap-4">
+    <div class="flex items-center gap-2.5 flex-1 min-w-0">
+      <a href="/" class="flex items-center gap-2.5 min-w-0">
+        <svg viewBox="0 0 32 32" class="w-7 h-7 flex-shrink-0" aria-hidden="true">
+          <circle cx="16" cy="16" r="15" fill="#f1f5f9"/>
+          <path d="M16 16 L16 1 A15 15 0 0 1 31 16 Z" fill="#a78bfa"/>
+          <path d="M16 16 L31 16 A15 15 0 0 1 16 31 Z" fill="#f472b6"/>
+          <path d="M16 16 L16 31 A15 15 0 0 1 1 16 Z" fill="#fb923c"/>
+          <path d="M16 16 L1 16 A15 15 0 0 1 16 1 Z" fill="#60a5fa"/>
+          <circle cx="16" cy="16" r="5.5" fill="white"/>
+        </svg>
+        <span class="font-extrabold text-slate-800 text-base tracking-tight truncate">Wheel Spinner</span>
+      </a>
+    </div>
+    <div class="flex items-center gap-0.5 flex-shrink-0">
+      <a href="/" class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-slate-600 font-medium hover:bg-slate-100 transition">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 8 8 12 12 16"/><line x1="16" y1="12" x2="8" y2="12"/></svg>
+        <span class="hidden sm:inline">Back to Spinner</span>
+      </a>
+      <button disabled class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-slate-400 font-medium cursor-not-allowed" title="Coming soon">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+        <span class="hidden sm:inline">Clear</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ── Content ───────────────────────────────────────────── -->
+  <div class="pt-14 max-w-2xl mx-auto px-4 py-8">
+
+    <div class="mb-6">
+      <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Spin History</h1>
+      <p class="mt-1 text-sm text-slate-500">Your recent results, stored in your browser.</p>
+    </div>
+
+    <!-- Preview notice -->
+    <div class="mb-6 flex items-start gap-3 rounded-2xl bg-indigo-50 border border-indigo-100 px-4 py-3">
+      <svg class="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <p class="text-sm text-indigo-700">This is a preview of the history feature. Results shown are examples of what your spin log will look like.</p>
+    </div>
+
+    <!-- Floating card -->
+    <div class="bg-white rounded-[26px] border border-black/[0.06] shadow-[0_8px_40px_rgba(0,0,0,0.10),0_2px_8px_rgba(0,0,0,0.05)] overflow-hidden">
+
+      <!-- Today -->
+      <div class="px-5 pt-5 pb-2">
+        <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Today — May 1, 2026</p>
+      </div>
+      <ul class="divide-y divide-slate-100">
+
+        <li class="flex items-center gap-4 px-5 py-3.5">
+          <span class="w-3 h-3 rounded-full flex-shrink-0" style="background:#a78bfa"></span>
+          <div class="flex-1 min-w-0">
+            <a href="/yes-no/" class="text-xs text-slate-400 hover:text-indigo-600 transition">Yes / No</a>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="text-sm font-bold text-slate-900">Yes</span>
+              <span class="inline-flex items-center rounded-full bg-violet-100 px-2 py-0.5 text-xs font-semibold text-violet-700">Winner</span>
+            </div>
+          </div>
+          <span class="text-xs text-slate-400 flex-shrink-0">2:34 PM</span>
+        </li>
+
+        <li class="flex items-center gap-4 px-5 py-3.5">
+          <span class="w-3 h-3 rounded-full flex-shrink-0" style="background:#60a5fa"></span>
+          <div class="flex-1 min-w-0">
+            <a href="/food-for-tonight/" class="text-xs text-slate-400 hover:text-indigo-600 transition">Food for Tonight</a>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="text-sm font-bold text-slate-900">Ramen</span>
+              <span class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-700">Winner</span>
+            </div>
+          </div>
+          <span class="text-xs text-slate-400 flex-shrink-0">2:18 PM</span>
+        </li>
+
+        <li class="flex items-center gap-4 px-5 py-3.5">
+          <span class="w-3 h-3 rounded-full flex-shrink-0" style="background:#fb923c"></span>
+          <div class="flex-1 min-w-0">
+            <a href="/rock-paper-scissors/" class="text-xs text-slate-400 hover:text-indigo-600 transition">Rock Paper Scissors</a>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="text-sm font-bold text-slate-900">Scissors</span>
+              <span class="inline-flex items-center rounded-full bg-orange-100 px-2 py-0.5 text-xs font-semibold text-orange-700">Winner</span>
+            </div>
+          </div>
+          <span class="text-xs text-slate-400 flex-shrink-0">1:55 PM</span>
+        </li>
+
+        <li class="flex items-center gap-4 px-5 py-3.5">
+          <span class="w-3 h-3 rounded-full flex-shrink-0" style="background:#fbbf24"></span>
+          <div class="flex-1 min-w-0">
+            <a href="/days-of-the-week/" class="text-xs text-slate-400 hover:text-indigo-600 transition">Days of the Week</a>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="text-sm font-bold text-slate-900">Thursday</span>
+              <span class="inline-flex items-center rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-semibold text-yellow-700">Winner</span>
+            </div>
+          </div>
+          <span class="text-xs text-slate-400 flex-shrink-0">12:40 PM</span>
+        </li>
+
+        <li class="flex items-center gap-4 px-5 py-3.5">
+          <span class="w-3 h-3 rounded-full flex-shrink-0" style="background:#a78bfa"></span>
+          <div class="flex-1 min-w-0">
+            <a href="/coin-flip/" class="text-xs text-slate-400 hover:text-indigo-600 transition">Coin Flip</a>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="text-sm font-bold text-slate-900">Heads</span>
+              <span class="inline-flex items-center rounded-full bg-violet-100 px-2 py-0.5 text-xs font-semibold text-violet-700">Winner</span>
+            </div>
+          </div>
+          <span class="text-xs text-slate-400 flex-shrink-0">11:22 AM</span>
+        </li>
+
+        <li class="flex items-center gap-4 px-5 py-3.5">
+          <span class="w-3 h-3 rounded-full flex-shrink-0" style="background:#2dd4bf"></span>
+          <div class="flex-1 min-w-0">
+            <a href="/fruits/" class="text-xs text-slate-400 hover:text-indigo-600 transition">Fruits</a>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="text-sm font-bold text-slate-900">Mango</span>
+              <span class="inline-flex items-center rounded-full bg-teal-100 px-2 py-0.5 text-xs font-semibold text-teal-700">Winner</span>
+            </div>
+          </div>
+          <span class="text-xs text-slate-400 flex-shrink-0">9:15 AM</span>
+        </li>
+      </ul>
+
+      <!-- Yesterday -->
+      <div class="px-5 pt-5 pb-2 border-t border-slate-100">
+        <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Yesterday — Apr 30, 2026</p>
+      </div>
+      <ul class="divide-y divide-slate-100">
+
+        <li class="flex items-center gap-4 px-5 py-3.5">
+          <span class="w-3 h-3 rounded-full flex-shrink-0" style="background:#f472b6"></span>
+          <div class="flex-1 min-w-0">
+            <a href="/team-colors/" class="text-xs text-slate-400 hover:text-indigo-600 transition">Team Colors</a>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="text-sm font-bold text-slate-900">Blue</span>
+              <span class="inline-flex items-center rounded-full bg-pink-100 px-2 py-0.5 text-xs font-semibold text-pink-700">Winner</span>
+            </div>
+          </div>
+          <span class="text-xs text-slate-400 flex-shrink-0">8:43 PM</span>
+        </li>
+
+        <li class="flex items-center gap-4 px-5 py-3.5">
+          <span class="w-3 h-3 rounded-full flex-shrink-0" style="background:#a78bfa"></span>
+          <div class="flex-1 min-w-0">
+            <a href="/priority/" class="text-xs text-slate-400 hover:text-indigo-600 transition">Priority</a>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="text-sm font-bold text-slate-900">Do it now</span>
+              <span class="inline-flex items-center rounded-full bg-violet-100 px-2 py-0.5 text-xs font-semibold text-violet-700">Winner</span>
+            </div>
+          </div>
+          <span class="text-xs text-slate-400 flex-shrink-0">7:30 PM</span>
+        </li>
+
+        <li class="flex items-center gap-4 px-5 py-3.5">
+          <span class="w-3 h-3 rounded-full flex-shrink-0" style="background:#fb923c"></span>
+          <div class="flex-1 min-w-0">
+            <a href="/yes-no-maybe/" class="text-xs text-slate-400 hover:text-indigo-600 transition">Yes / No / Maybe</a>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="text-sm font-bold text-slate-900">Maybe</span>
+              <span class="inline-flex items-center rounded-full bg-orange-100 px-2 py-0.5 text-xs font-semibold text-orange-700">Winner</span>
+            </div>
+          </div>
+          <span class="text-xs text-slate-400 flex-shrink-0">6:11 PM</span>
+        </li>
+
+        <li class="flex items-center gap-4 px-5 py-3.5">
+          <span class="w-3 h-3 rounded-full flex-shrink-0" style="background:#4ade80"></span>
+          <div class="flex-1 min-w-0">
+            <a href="/numbers-1-8/" class="text-xs text-slate-400 hover:text-indigo-600 transition">Numbers 1–8</a>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="text-sm font-bold text-slate-900">7</span>
+              <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700">Winner</span>
+            </div>
+          </div>
+          <span class="text-xs text-slate-400 flex-shrink-0">3:55 PM</span>
+        </li>
+
+        <li class="flex items-center gap-4 px-5 py-3.5">
+          <span class="w-3 h-3 rounded-full flex-shrink-0" style="background:#f472b6"></span>
+          <div class="flex-1 min-w-0">
+            <a href="/months/" class="text-xs text-slate-400 hover:text-indigo-600 transition">Months</a>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="text-sm font-bold text-slate-900">October</span>
+              <span class="inline-flex items-center rounded-full bg-pink-100 px-2 py-0.5 text-xs font-semibold text-pink-700">Winner</span>
+            </div>
+          </div>
+          <span class="text-xs text-slate-400 flex-shrink-0">2:12 PM</span>
+        </li>
+
+        <li class="flex items-center gap-4 px-5 py-3.5">
+          <span class="w-3 h-3 rounded-full flex-shrink-0" style="background:#a78bfa"></span>
+          <div class="flex-1 min-w-0">
+            <a href="/compass-directions/" class="text-xs text-slate-400 hover:text-indigo-600 transition">Compass Directions</a>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="text-sm font-bold text-slate-900">North</span>
+              <span class="inline-flex items-center rounded-full bg-violet-100 px-2 py-0.5 text-xs font-semibold text-violet-700">Winner</span>
+            </div>
+          </div>
+          <span class="text-xs text-slate-400 flex-shrink-0">1:40 PM</span>
+        </li>
+
+      </ul>
+
+      <!-- Empty state hint at bottom -->
+      <div class="px-5 py-4 border-t border-slate-100 flex items-center justify-center gap-2 text-xs text-slate-400">
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        History is stored locally — never leaves your device
+      </div>
+
+    </div>
+
+    <!-- CTA back -->
+    <div class="mt-6 text-center">
+      <a href="/" class="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-2 text-sm font-medium text-slate-600 transition hover:border-slate-400 hover:text-slate-800">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 8 8 12 12 16"/><line x1="16" y1="12" x2="8" y2="12"/></svg>
+        Back to Spinner
+      </a>
+    </div>
+
+  </div>
+
+</body>
+</html>

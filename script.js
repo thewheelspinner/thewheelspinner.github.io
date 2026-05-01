@@ -50,6 +50,17 @@ function wheelApp() {
     showAddInput: false,
     newEntryValue: '',
 
+    // When entries < 4, repeat them to fill the wheel (at least 6 segments).
+    // The list panel still shows only the canonical entries.
+    get displayEntries() {
+      const n = this.entries.length;
+      if (n >= 4) return this.entries;
+      const times = Math.ceil(6 / n);
+      const arr = [];
+      for (let i = 0; i < times; i++) arr.push(...this.entries);
+      return arr;
+    },
+
     init() {
       // Preset pages set window.__PRESET__; also support ?preset=slug on root
       const presetSlug = (window.__PRESET__ || new URLSearchParams(location.search).get('preset') || '').trim();
@@ -98,13 +109,16 @@ function wheelApp() {
 
     get wheelStyle() {
       const colors = PRESETS[this.stylePreset] || PRESETS.vivid;
-      const count = this.entries.length;
+      const origLen = this.entries.length;
+      const disp = this.displayEntries;
+      const count = disp.length;
       const angle = 360 / count;
-      const stops = this.entries
+      const stops = disp
         .map((_, i) => {
           const start = Math.round(i * angle);
           const end = Math.round((i + 1) * angle);
-          return `${colors[i % colors.length]} ${start}deg ${end}deg`;
+          // Colour cycles through the original entry count so repeats share colour
+          return `${colors[(i % origLen) % colors.length]} ${start}deg ${end}deg`;
         })
         .join(', ');
       const transition = this.noTransition
@@ -114,10 +128,9 @@ function wheelApp() {
     },
 
     labelStyle(index) {
-      const count = this.entries.length;
+      const count = this.displayEntries.length;
       const angle = 360 / count;
       const centerAngle = -180 + index * angle + angle / 2;
-      // Fewer segments = larger arcs = pull text inward so it sits in the arc's middle
       const widthPct = Math.min(37, 20 + count * 2.1).toFixed(1);
       return `width: ${widthPct}%; transform: rotate(${centerAngle}deg) translateY(-50%);`;
     },
@@ -131,6 +144,14 @@ function wheelApp() {
       this.winnerLabel = '';
       this.persist();
       track('preset_loaded', { preset: name, entries_count: preset.length });
+    },
+
+    // Returns the slug URL for a preset name — used by the dropdown links
+    presetUrl(name) {
+      return '/' + name.toLowerCase()
+        .replace(/[–—]/g, '-')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '') + '/';
     },
 
     addEntry() {
@@ -217,11 +238,16 @@ function wheelApp() {
     },
 
     shareWheel() {
+      track('wheel_shared', {});
+      if (navigator.share) {
+        navigator.share({ title: document.title, url: window.location.href }).catch(() => {});
+        return;
+      }
+      // Fallback: copy to clipboard
       navigator.clipboard?.writeText(window.location.href).then(() => {
         this.copied = true;
         setTimeout(() => { this.copied = false; }, 2000);
       });
-      track('wheel_shared', {});
     },
 
     // ── Wheel actions ───────────────────────────────────────────
@@ -247,7 +273,8 @@ function wheelApp() {
       this.spinning = true;
       this.winnerLabel = '';
 
-      const count = this.entries.length;
+      const disp = this.displayEntries;
+      const count = disp.length;
       const segmentAngle = 360 / count;
       const winnerIndex = Math.floor(Math.random() * count);
       const winnerCenter = winnerIndex * segmentAngle + segmentAngle / 2;
@@ -260,19 +287,19 @@ function wheelApp() {
 
       track('wheel_spun', {
         entries: this.entries,
-        entries_count: count,
+        entries_count: this.entries.length,
         style_preset: this.stylePreset,
         spin_duration: this.spinDuration,
         rounds_actual: rounds
       });
 
       window.setTimeout(() => {
-        this.winnerLabel = this.entries[winnerIndex];
+        this.winnerLabel = disp[winnerIndex];
         this.spinning = false;
         track('winner_revealed', {
           winner: this.winnerLabel,
           winner_index: winnerIndex,
-          entries_count: count
+          entries_count: this.entries.length
         });
       }, this.spinDuration * 1000 + 80);
     }
