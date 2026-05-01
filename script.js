@@ -116,7 +116,7 @@ function wheelApp() {
     labelStyle(index) {
       const count = this.entries.length;
       const angle = 360 / count;
-      const centerAngle = -90 + index * angle + angle / 2;
+      const centerAngle = -180 + index * angle + angle / 2;
       // Fewer segments = larger arcs = pull text inward so it sits in the arc's middle
       const widthPct = Math.min(37, 20 + count * 2.1).toFixed(1);
       return `width: ${widthPct}%; transform: rotate(${centerAngle}deg) translateY(-50%);`;
