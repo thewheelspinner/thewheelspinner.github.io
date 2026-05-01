@@ -110,7 +110,7 @@ function wheelApp() {
     _startIdleAnimation() {
       let last = null;
       const tick = (ts) => {
-        if (!this.spinning) {
+        if (!this.spinning && !this.winnerLabel) {
           if (last !== null) {
             // 360° per 30 000 ms — one slow revolution every 30 s
             this.rotation += (ts - last) * (360 / 30000);
