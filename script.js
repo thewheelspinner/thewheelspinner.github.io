@@ -51,6 +51,7 @@ function wheelApp() {
     lists: LISTS,
     rotation: 0,
     spinning: false,
+    idling: false,      // true while the ambient idle rotation RAF is driving the wheel
     winnerLabel: '',
     spinDuration: 3,
     minRounds: 5,
@@ -102,6 +103,27 @@ function wheelApp() {
         track('style_changed', { preset: val });
       });
       this.$watch('spinDuration', () => this.persist());
+
+      this._startIdleAnimation();
+    },
+
+    _startIdleAnimation() {
+      let last = null;
+      const tick = (ts) => {
+        if (!this.spinning) {
+          if (last !== null) {
+            // 360° per 30 000 ms — one slow revolution every 30 s
+            this.rotation += (ts - last) * (360 / 30000);
+          }
+          last = ts;
+          this.idling = true;
+        } else {
+          last = null;
+          this.idling = false;
+        }
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
     },
 
     persist() {
@@ -156,7 +178,7 @@ function wheelApp() {
           return `${color} ${start}deg ${end}deg`;
         })
         .join(', ');
-      const transition = this.noTransition
+      const transition = (this.noTransition || this.idling)
         ? 'none'
         : `transform ${this.spinDuration}s cubic-bezier(.17,.67,.26,1)`;
       return `background: conic-gradient(from -90deg, ${stops}); transform: rotate(${this.rotation}deg); transition: ${transition};`;
@@ -316,6 +338,7 @@ function wheelApp() {
     spin() {
       if (this.spinning || this.entries.length < 2) return;
       this.sanitizeRounds();
+      this.idling = false;  // restore transition before the rotation jump
       this.spinning = true;
       this.winnerLabel = '';
 
