@@ -78,24 +78,68 @@ function wheelApp() {
     },
 
     init() {
-      const presetSlug = (window.__PRESET__ || new URLSearchParams(location.search).get('preset') || '').trim();
+      const params = new URLSearchParams(location.search);
+      const presetSlug = (window.__PRESET__ || params.get('preset') || '').trim();
+      const shortcode = (params.get('w') || params.get('wheel') || '').trim();
+      const tempId = (params.get('id') || '').trim();
+      const inlineData = params.get('data');
 
-      if (presetSlug && SLUG_MAP[presetSlug]) {
-        this.entries = [...SLUG_MAP[presetSlug]];
-        this.customColors = [];
-        track('preset_page_loaded', { preset: presetSlug });
-      } else {
+      // Custom-wheel sources take priority over presets and localStorage.
+      // Order: inline base64 (no fetch) > shortcode (permanent) > temp id.
+      let customLoaded = false;
+
+      if (inlineData) {
         try {
-          const saved = JSON.parse(localStorage.getItem('wheelApp') || 'null');
-          if (saved) {
-            if (Array.isArray(saved.entries) && saved.entries.length >= 2) this.entries = saved.entries;
-            if (Array.isArray(saved.customColors)) this.customColors = saved.customColors;
-            if (saved.stylePreset && PRESETS[saved.stylePreset]) this.stylePreset = saved.stylePreset;
-            if (saved.spinDuration) this.spinDuration = saved.spinDuration;
-            if (saved.minRounds) this.minRounds = saved.minRounds;
-            if (saved.maxRounds) this.maxRounds = saved.maxRounds;
+          const json = atob(inlineData.replace(/-/g, '+').replace(/_/g, '/'));
+          if (this._applyWheelData(JSON.parse(json))) {
+            customLoaded = true;
+            track('wheel_inline_loaded', {});
           }
         } catch (_) {}
+      }
+
+      if (!customLoaded && (shortcode || tempId)) {
+        // Restrict slug/id to a safe charset so we never construct an off-site
+        // fetch URL from user-controlled query string.
+        const safe = /^[a-zA-Z0-9._-]+$/;
+        const url = shortcode && safe.test(shortcode)
+          ? `/wheels/${shortcode}.json`
+          : tempId && safe.test(tempId)
+            ? `/wheels/temp/${tempId}.json`
+            : null;
+        if (url) {
+          customLoaded = true; // skip preset/localStorage; fetch resolves async
+          fetch(url, { cache: 'no-cache' })
+            .then(r => r.ok ? r.json() : Promise.reject(r.status))
+            .then(data => {
+              if (this._applyWheelData(data)) {
+                track(shortcode ? 'wheel_shortcode_loaded' : 'wheel_temp_loaded', {
+                  id: shortcode || tempId
+                });
+              }
+            })
+            .catch(err => console.warn('wheel load failed:', err));
+        }
+      }
+
+      if (!customLoaded) {
+        if (presetSlug && SLUG_MAP[presetSlug]) {
+          this.entries = [...SLUG_MAP[presetSlug]];
+          this.customColors = [];
+          track('preset_page_loaded', { preset: presetSlug });
+        } else {
+          try {
+            const saved = JSON.parse(localStorage.getItem('wheelApp') || 'null');
+            if (saved) {
+              if (Array.isArray(saved.entries) && saved.entries.length >= 2) this.entries = saved.entries;
+              if (Array.isArray(saved.customColors)) this.customColors = saved.customColors;
+              if (saved.stylePreset && PRESETS[saved.stylePreset]) this.stylePreset = saved.stylePreset;
+              if (saved.spinDuration) this.spinDuration = saved.spinDuration;
+              if (saved.minRounds) this.minRounds = saved.minRounds;
+              if (saved.maxRounds) this.maxRounds = saved.maxRounds;
+            }
+          } catch (_) {}
+        }
       }
 
       this.$watch('stylePreset', (val) => {
@@ -105,6 +149,25 @@ function wheelApp() {
       this.$watch('spinDuration', () => this.persist());
 
       this._startIdleAnimation();
+    },
+
+    // Apply a custom wheel definition loaded from JSON / inline data.
+    // Shape: { title?, entries[], colors?[], stylePreset?, spinDuration? }
+    _applyWheelData(data) {
+      if (!data || !Array.isArray(data.entries) || data.entries.length < 2) return false;
+      this.entries = data.entries.map(e => String(e).slice(0, 40)).slice(0, 20);
+      this.customColors = Array.isArray(data.colors)
+        ? data.colors.slice(0, this.entries.length).map(c => typeof c === 'string' ? c : '')
+        : [];
+      if (data.stylePreset && PRESETS[data.stylePreset]) this.stylePreset = data.stylePreset;
+      if (typeof data.spinDuration === 'number' && data.spinDuration >= 1 && data.spinDuration <= 10) {
+        this.spinDuration = data.spinDuration;
+      }
+      if (typeof data.title === 'string' && data.title) {
+        document.title = `${data.title} | TheWheelSpinner`;
+      }
+      this.winnerLabel = '';
+      return true;
     },
 
     _startIdleAnimation() {
@@ -128,6 +191,8 @@ function wheelApp() {
 
     persist() {
       if (window.__PRESET__) return;
+      const p = new URLSearchParams(location.search);
+      if (p.has('w') || p.has('wheel') || p.has('id') || p.has('data')) return;
       try {
         localStorage.setItem('wheelApp', JSON.stringify({
           entries: this.entries,

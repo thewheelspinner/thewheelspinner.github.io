@@ -1,0 +1,6 @@
+{
+  "title": "Demo Temp Wheel",
+  "entries": ["Option A", "Option B", "Option C", "Option D"],
+  "stylePreset": "neon",
+  "spinDuration": 3
+}
