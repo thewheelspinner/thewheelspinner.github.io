@@ -1,0 +1,6 @@
+{
+  "title": "Movie Night Picker",
+  "entries": ["Action", "Comedy", "Horror", "Sci-Fi", "Drama", "Animation", "Documentary", "Thriller"],
+  "stylePreset": "retro",
+  "spinDuration": 4
+}

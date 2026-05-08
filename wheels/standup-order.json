@@ -1,0 +1,6 @@
+{
+  "title": "Stand-up Order",
+  "entries": ["Alex", "Bella", "Chris", "Dana", "Erin", "Frank", "Grace", "Henry"],
+  "stylePreset": "pastel",
+  "spinDuration": 3
+}
