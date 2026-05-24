@@ -412,7 +412,9 @@ function wheelApp() {
       const segmentAngle = 360 / count;
       const winnerIndex = Math.floor(Math.random() * count);
       const winnerCenter = winnerIndex * segmentAngle + segmentAngle / 2;
-      const desiredAngle = (360 - winnerCenter) % 360;
+      // Gradient starts at -90deg (see wheelStyle `from -90deg`), so the top
+      // pointer sits 90deg into the wheel's local frame. Offset to match.
+      const desiredAngle = (450 - winnerCenter) % 360;
       const currentAngle = ((this.rotation % 360) + 360) % 360;
       const correction = (desiredAngle - currentAngle + 360) % 360;
       const rounds = Math.floor(Math.random() * (this.maxRounds - this.minRounds + 1)) + this.minRounds;
